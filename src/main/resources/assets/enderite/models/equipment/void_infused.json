@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "enderite:void_infused"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "enderite:void_infused"
+      }
+    ]
+  }
+}

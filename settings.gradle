@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric (GitHub Packages)'
+            url = 'https://maven.pkg.github.com/FabricMC/fabric-loom'
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: "token"
+                password = System.getenv("GITHUB_TOKEN") ?: ""
+            }
+        }
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}

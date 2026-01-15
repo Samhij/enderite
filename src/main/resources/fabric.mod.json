@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "enderite",
+  "version": "${version}",
+  "name": "Enderite",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/enderite/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.lonk.enderite.EnderiteDataGenerator"
+    ],
+    "client": [
+      "net.lonk.enderite.EnderiteClient"
+    ],
+    "main": [
+      "net.lonk.enderite.Enderite"
+    ]
+  },
+  "mixins": [
+    "enderite.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

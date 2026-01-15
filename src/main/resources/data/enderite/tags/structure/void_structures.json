@@ -1,0 +1,26 @@
+{
+  "values": [
+    "minecraft:mineshaft",
+    "minecraft:mineshaft_mesa",
+    "minecraft:buried_treasure",
+    "minecraft:ruined_portal",
+    "minecraft:ruined_portal_desert",
+    "minecraft:ruined_portal_nether",
+    "minecraft:village_plains",
+    "minecraft:village_desert",
+    "minecraft:village_savanna",
+    "minecraft:village_snowy",
+    "minecraft:village_taiga",
+    "minecraft:pillager_outpost",
+    "minecraft:desert_pyramid",
+    "minecraft:shipwreck",
+    "minecraft:shipwreck_beached",
+    "minecraft:stronghold",
+    "minecraft:bastion_remnant",
+    "minecraft:fortress",
+    "minecraft:nether_fossil",
+    "minecraft:end_city",
+    "minecraft:ancient_city",
+    "minecraft:trail_ruins"
+  ]
+}
