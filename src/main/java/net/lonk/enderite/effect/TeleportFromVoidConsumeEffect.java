@@ -1,6 +1,6 @@
 package net.lonk.enderite.effect;
 
-import net.lonk.enderite.world.dimension.ModDimensions;
+import net.lonk.enderite.Enderite;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -9,10 +9,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.consume.ConsumeEffect;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
     @Override
     public boolean onConsume(World world, ItemStack stack, LivingEntity user) {
         if (user instanceof PlayerEntity player && !world.isClient) { // Ensure server-side logic
-            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID_WORLD_KEY) {
+            if (player.getWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
                 ServerWorld overworld = player.getServer().getOverworld();
 
                 // 1. Teleport first

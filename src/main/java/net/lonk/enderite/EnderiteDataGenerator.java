@@ -2,14 +2,10 @@ package net.lonk.enderite;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.datagen.*;
 import net.lonk.enderite.datagen.lang.ModEnglishLangProvider;
-import net.lonk.enderite.item.ModItemGroups;
-import net.lonk.enderite.item.ModItems;
 import net.lonk.enderite.world.ModConfiguredFeatures;
 import net.lonk.enderite.world.ModPlacedFeatures;
-import net.lonk.enderite.world.dimension.ModDimensions;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 
@@ -34,6 +30,5 @@ public class EnderiteDataGenerator implements DataGeneratorEntrypoint {
     public void buildRegistry(RegistryBuilder registryBuilder) {
         registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.DIMENSION_TYPE, ModDimensions::bootstrapType);
     }
 }

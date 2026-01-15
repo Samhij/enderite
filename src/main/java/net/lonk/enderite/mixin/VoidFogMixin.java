@@ -1,13 +1,16 @@
 package net.lonk.enderite.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.lonk.enderite.world.dimension.ModDimensions;
+import net.lonk.enderite.Enderite;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Fog;
 import net.minecraft.client.render.FogShape;
 import net.minecraft.entity.Entity;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +24,7 @@ public abstract class VoidFogMixin {
         Entity entity = camera.getFocusedEntity();
 
         if (entity instanceof ClientPlayerEntity player) {
-            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID_WORLD_KEY) {
+            if (player.getWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
                 Fog thickVoidFog = new Fog(0.0f, 128.0f, FogShape.SPHERE, color.x, color.y, color.z, color.w);
                 RenderSystem.setShaderFog(thickVoidFog);
                 cir.setReturnValue(thickVoidFog);
