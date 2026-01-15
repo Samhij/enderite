@@ -7,7 +7,6 @@ import net.lonk.enderite.block.ModBlockEntities;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.entity.custom.EnderiteGolemEntity;
 import net.lonk.enderite.entity.ModEntities;
-import net.lonk.enderite.item.ModArmorMaterials;
 import net.lonk.enderite.item.ModItemGroups;
 import net.lonk.enderite.item.ModItems;
 import net.lonk.enderite.recipe.ModRecipeTypes;

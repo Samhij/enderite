@@ -192,7 +192,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.void_infused.title"),
                         Text.translatable("advancements.enderite.void_infused.description"),
                         BACKGROUND_TEXTURE,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -346,7 +346,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.enter_the_void.title"),
                         Text.translatable("advancements.enderite.enter_the_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -360,7 +360,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.void_structure.title"),
                         Text.translatable("advancements.enderite.void_structure.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -382,7 +382,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.trade_with_villager_void.title"),
                         Text.translatable("advancements.enderite.trade_with_villager_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -399,7 +399,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.loot_bastion_void.title"),
                         Text.translatable("advancements.enderite.loot_bastion_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -423,7 +423,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.kill_blaze_void.title"),
                         Text.translatable("advancements.enderite.kill_blaze_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -441,7 +441,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.get_levitation_void.title"),
                         Text.translatable("advancements.enderite.get_levitation_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false
@@ -457,7 +457,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.break_spider_spawner_void.title"),
                         Text.translatable("advancements.enderite.break_spider_spawner_void.description"),
                         BACKGROUND_TEXTURE_VOID,
-                        AdvancementFrame.GOAL,
+                        AdvancementFrame.TASK,
                         true,
                         true,
                         false

@@ -75,7 +75,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
                 // Void Infusion Recipes
                 offerVoidInfusionRecipe(ModItems.ENDERITE_INGOT, ModItems.VOID_INFUSED_INGOT);
-                offerVoidInfusionRecipe(Items.CHORUS_FRUIT, ModItems.CHORUS_SINGULARITY);
+                offerVoidInfusionRecipe(Items.CHORUS_FRUIT, ModItems.VOID_INFUSED_CHORUS_FRUIT);
 
                 // Tools
                 offerVoidInfusionRecipe(ModItems.ENDERITE_SWORD, ModItems.VOID_INFUSED_SWORD);

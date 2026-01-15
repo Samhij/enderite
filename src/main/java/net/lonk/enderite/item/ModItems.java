@@ -1,7 +1,6 @@
 package net.lonk.enderite.item;
 
 import net.lonk.enderite.Enderite;
-import net.lonk.enderite.item.custom.ChorusSingularityItem;
 import net.minecraft.component.type.FoodComponents;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.EquipmentType;
@@ -30,8 +29,8 @@ public class ModItems {
     public static final Item VOID_INFUSED_INGOT = registerItem("void_infused_ingot",
             new Item(baseSettings("void_infused_ingot").rarity(Rarity.RARE).fireproof()));
 
-    public static final Item CHORUS_SINGULARITY = registerItem("chorus_singularity",
-            new ChorusSingularityItem(baseSettings("chorus_singularity").food(FoodComponents.CHORUS_FRUIT).rarity(Rarity.RARE).fireproof()));
+    public static final Item VOID_INFUSED_CHORUS_FRUIT = registerItem("void_infused_chorus_fruit",
+            new Item(baseSettings("void_infused_chorus_fruit").food(FoodComponents.CHORUS_FRUIT, ModConsumableComponents.VOID_INFUSED_CHORUS_FRUIT).rarity(Rarity.RARE).fireproof()));
 
     // endregion
 

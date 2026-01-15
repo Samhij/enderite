@@ -21,7 +21,7 @@ public class ModItemGroups {
                         entries.add(ModItems.ENDERITE_SCRAP);
                         entries.add(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE);
                         entries.add(ModItems.VOID_INFUSED_INGOT);
-                        entries.add(ModItems.CHORUS_SINGULARITY);
+                        entries.add(ModItems.VOID_INFUSED_CHORUS_FRUIT);
 
                         entries.add(ModBlocks.ENDERITE_ORE);
                         entries.add(ModBlocks.ENDERITE_BLOCK);

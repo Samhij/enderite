@@ -2,17 +2,12 @@ package net.lonk.enderite.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.lonk.enderite.Enderite;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.item.ModArmorMaterials;
 import net.lonk.enderite.item.ModItems;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.ItemModelGenerator;
 import net.minecraft.client.data.Models;
-import net.minecraft.client.render.entity.equipment.EquipmentModel;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.util.Identifier;
 
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
@@ -33,7 +28,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.ENDERITE_SCRAP, Models.GENERATED);
         itemModelGenerator.register(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, Models.GENERATED);
         itemModelGenerator.register(ModItems.VOID_INFUSED_INGOT, Models.GENERATED);
-        itemModelGenerator.register(ModItems.CHORUS_SINGULARITY, Models.GENERATED);
+        itemModelGenerator.register(ModItems.VOID_INFUSED_CHORUS_FRUIT, Models.GENERATED);
 
         itemModelGenerator.register(ModItems.ENDERITE_SWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ENDERITE_PICKAXE, Models.HANDHELD);

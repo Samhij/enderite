@@ -1,4 +1,4 @@
-package net.lonk.enderite.item.custom;
+package net.lonk.enderite.effect;
 
 import net.lonk.enderite.world.dimension.ModDimensions;
 import net.minecraft.entity.LivingEntity;
@@ -6,9 +6,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.consume.ConsumeEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -20,51 +21,60 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class ChorusSingularityItem extends Item {
-    public ChorusSingularityItem(Settings settings) {
-        super(settings);
+public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
+    @Override
+    public Type<? extends ConsumeEffect> getType() {
+        return Type.TELEPORT_RANDOMLY;
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        ItemStack resultStack = super.finishUsing(stack, world, user);
-
-        if (user instanceof PlayerEntity player && !world.isClient()) {
+    public boolean onConsume(World world, ItemStack stack, LivingEntity user) {
+        if (user instanceof PlayerEntity player && !world.isClient) { // Ensure server-side logic
             if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID_LEVEL_KEY) {
                 ServerWorld overworld = player.getServer().getOverworld();
+
+                // 1. Teleport first
                 player.teleport(overworld, player.getX(), 250, player.getY(), Set.of(), player.getYaw(), player.getPitch(), false);
+
+                // 2. Add effects and sounds
                 world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_PORTAL_TRAVEL, SoundCategory.PLAYERS, 1f, 2f);
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0));
+
+                // 3. Scramble inventory
                 scrambleInventory(player);
+
+                // 4. Add the survival item (Chorus Fruit)
                 putInRandomSlot(player, new ItemStack(Items.CHORUS_FRUIT));
+
+                // 5. Send the warning
                 player.sendMessage(Text.literal("If you want to survive, check your inventory"), true);
+
+                return true;
+            } else {
+                player.sendMessage(Text.literal("It seems this is not the right dimension to be using this item."), true);
+                return false;
             }
         }
-
-        return resultStack;
+        return false;
     }
 
-    private void scrambleInventory(PlayerEntity player) {
-        PlayerInventory inventory = player.getInventory();
-        List<ItemStack> stacks = new ArrayList<>();
+    public void scrambleInventory(PlayerEntity player) {
+        // 1. Get the main inventory list (36 slots: 9 hotbar + 27 main)
+        var inventory = player.getInventory().main;
 
-        // 1. Collect all items from the main inventory (0-35)
-        // We skip armor (36-39) and offhand (40) so the player doesn't
-        // suddenly lose their boots or shield mid-teleport.
-        for (int i = 0; i < 36; i++) {
-            stacks.add(inventory.getStack(i).copy());
+        // 2. Copy current items to a temporary list
+        List<ItemStack> items = new ArrayList<>(inventory);
+
+        // 3. Shuffle the list
+        Collections.shuffle(items);
+
+        // 4. Put shuffled items back into the actual inventory
+        for (int i = 0; i < inventory.size(); i++) {
+            inventory.set(i, items.get(i));
         }
 
-        // 2. Shuffle the list
-        Collections.shuffle(stacks);
-
-        // 3. Put them back into the inventory
-        for (int i = 0; i < 36; i++) {
-            inventory.setStack(i, stacks.get(i));
-        }
-
-        // 4. Mark inventory as dirty so the client syncs the changes
-        inventory.markDirty();
+        // 5. IMPORTANT: Sync changes if this is on the server
+        player.getInventory().markDirty();
     }
 
     private void putInRandomSlot(PlayerEntity player, ItemStack stack) {
@@ -76,6 +86,7 @@ public class ChorusSingularityItem extends Item {
             int randomSlot = random.nextInt(36);
             if (inventory.getStack(randomSlot).isEmpty()) {
                 inventory.setStack(randomSlot, stack);
+                inventory.markDirty();
                 return;
             }
         }
