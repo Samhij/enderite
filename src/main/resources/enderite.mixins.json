@@ -12,7 +12,8 @@
     "VoidTeleportMixin"
   ],
   "client": [
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "VoidFogMixin"
   ],
   "injectors": {
     "defaultRequire": 1

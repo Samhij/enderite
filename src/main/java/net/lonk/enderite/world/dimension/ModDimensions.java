@@ -17,7 +17,7 @@ import java.util.OptionalLong;
 public class ModDimensions {
     public static final RegistryKey<DimensionType> THE_VOID_TYPE_KEY = RegistryKey.of(RegistryKeys.DIMENSION_TYPE,
             Identifier.of(Enderite.MOD_ID, "the_void_type"));
-    public static final RegistryKey<World> THE_VOID_LEVEL_KEY = RegistryKey.of(RegistryKeys.WORLD,
+    public static final RegistryKey<World> THE_VOID_WORLD_KEY = RegistryKey.of(RegistryKeys.WORLD,
             Identifier.of(Enderite.MOD_ID, "the_void"));
     public static final RegistryKey<DimensionOptions> THE_VOID_OPTIONS_KEY = RegistryKey.of(RegistryKeys.DIMENSION,
             Identifier.of(Enderite.MOD_ID, "the_void"));
@@ -32,11 +32,11 @@ public class ModDimensions {
                 1.0, // coordinateScale
                 true, // bedWorks
                 false, // respawnAnchorWorks
-                0, // minY
-                256, // height
-                256, // logicalHeight
+                -64, // minY
+                384, // height
+                384, // logicalHeight
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
-                DimensionTypes.THE_NETHER_ID, // effectsLocation
+                DimensionTypes.THE_END_ID, // effectsLocation
                 0.0f, // ambientLight
                 new DimensionType.MonsterSettings(true, false, UniformIntProvider.create(0, 0), 0)
         ));

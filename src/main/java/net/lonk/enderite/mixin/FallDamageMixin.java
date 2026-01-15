@@ -19,7 +19,7 @@ public abstract class FallDamageMixin {
 
         if (entity instanceof PlayerEntity player) {
             RegistryKey<World> dimension = player.getWorld().getRegistryKey();
-            if (dimension == ModDimensions.THE_VOID_LEVEL_KEY) {
+            if (dimension == ModDimensions.THE_VOID_WORLD_KEY) {
                 cir.setReturnValue(false);
             }
         }

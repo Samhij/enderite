@@ -9,7 +9,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.consume.ConsumeEffect;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -30,7 +29,7 @@ public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
     @Override
     public boolean onConsume(World world, ItemStack stack, LivingEntity user) {
         if (user instanceof PlayerEntity player && !world.isClient) { // Ensure server-side logic
-            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID_LEVEL_KEY) {
+            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID_WORLD_KEY) {
                 ServerWorld overworld = player.getServer().getOverworld();
 
                 // 1. Teleport first

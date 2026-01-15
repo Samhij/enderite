@@ -127,6 +127,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("advancements.enderite.enter_the_void.title", "Into the Void");
         translationBuilder.add("advancements.enderite.enter_the_void.description", "Fall beyond the limits of reality itself");
 
+        // enter the void
+        translationBuilder.add("advancements.enderite.escape_void.title", "Defying the Depths");
+        translationBuilder.add("advancements.enderite.escape_void.description", "Find a way to escape the Void and end up in the End");
+
         // enter a structure in the void
         translationBuilder.add("advancements.enderite.void_structure.title", "A Trip Down Memory Lane");
         translationBuilder.add("advancements.enderite.void_structure.description", "Discover a familiar echo in the emptiness");
