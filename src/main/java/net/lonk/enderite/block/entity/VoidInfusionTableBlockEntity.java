@@ -15,8 +15,8 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -30,8 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedInventory, NamedScreenHandlerFactory {
     private static final int INPUT_SLOT = 0;
@@ -112,37 +110,40 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
      * only depends on item type and components, not quantity (as per SingleStackRecipeInput behavior).
      */
     private RecipeEntry<VoidInfusionRecipe> getCachedRecipe() {
-        if (world == null) {
+        if (world == null || !(world instanceof ServerWorld)) {
             return null;
         }
-        
+
         ItemStack inputStack = inventory.get(INPUT_SLOT);
-        
+
         // Check if cache is still valid (item type and components must match)
         if (cachedRecipe != null && ItemStack.areItemsAndComponentsEqual(cachedInputStack, inputStack)) {
             return cachedRecipe;
         }
-        
+
         // Cache is invalid, perform lookup and update cache
         if (inputStack.isEmpty()) {
             cachedRecipe = null;
             cachedInputStack = ItemStack.EMPTY;
             return null;
         }
-        
-        SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(inputStack);
 
-        cachedRecipe = world.getRegistryManager()
-                .getOptional(RegistryKeys.RECIPE)
-                .flatMap(registry -> registry.streamEntries()
-                        .filter(entry -> entry.value().getType() == ModRecipeTypes.VOID_INFUSION)
-                        .filter(entry -> ((VoidInfusionRecipe) entry.value()).matches(recipeInput, world))
-                        .findFirst()
-                        .map(entry -> new RecipeEntry<>(entry.getKey().orElseThrow(), (VoidInfusionRecipe) entry.value())))
+        SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(inputStack);
+        ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+
+        cachedRecipe = recipeManager.values()
+                .stream()
+                .filter(recipe -> recipe.value().getType() == ModRecipeTypes.VOID_INFUSION)
+                .filter(recipe -> {
+                    VoidInfusionRecipe voidRecipe = (VoidInfusionRecipe) recipe.value();
+                    return voidRecipe.matches(recipeInput, world);
+                })
+                .map(recipe -> new RecipeEntry<>(recipe.id(), (VoidInfusionRecipe) recipe.value()))
+                .findFirst()
                 .orElse(null);
 
         cachedInputStack = inputStack.copy();
-        
+
         return cachedRecipe;
     }
 
@@ -305,14 +306,16 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
         if (slot == INPUT_SLOT) {
             // Check if there's a recipe for this item using optimized lookup
-            if (world != null && !stack.isEmpty()) {
+            if (world instanceof ServerWorld && !stack.isEmpty()) {
                 SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(stack);
-                return world.getRegistryManager()
-                        .getOptional(RegistryKeys.RECIPE)
-                        .map(registry -> registry.stream()
-                                .filter(recipe -> recipe.getType() == ModRecipeTypes.VOID_INFUSION)
-                                .anyMatch(recipe -> ((VoidInfusionRecipe) recipe).matches(recipeInput, world)))
-                        .orElse(false);
+                ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+                return recipeManager.values()
+                        .stream()
+                        .filter(recipe -> recipe.value().getType() == ModRecipeTypes.VOID_INFUSION)
+                        .anyMatch(recipe -> {
+                            VoidInfusionRecipe voidRecipe = (VoidInfusionRecipe) recipe.value();
+                            return voidRecipe.matches(recipeInput, world);
+                        });
             }
             return false;
         } else if (slot == FUEL_SLOT) {
