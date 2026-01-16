@@ -49,6 +49,17 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ModItems.VOID_INFUSED_HOE)
         ;
 
+        getOrCreateTagBuilder(ItemTags.ARMOR_ENCHANTABLE)
+                .add(ModItems.ENDERITE_HELMET)
+                .add(ModItems.ENDERITE_CHESTPLATE)
+                .add(ModItems.ENDERITE_LEGGINGS)
+                .add(ModItems.ENDERITE_BOOTS)
+
+                .add(ModItems.VOID_INFUSED_HELMET)
+                .add(ModItems.VOID_INFUSED_CHESTPLATE)
+                .add(ModItems.VOID_INFUSED_LEGGINGS)
+                .add(ModItems.VOID_INFUSED_BOOTS)
+        ;
 
         getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
                 .add(ModItems.ENDERITE_HELMET)

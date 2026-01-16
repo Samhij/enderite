@@ -6,6 +6,7 @@ import net.lonk.enderite.Enderite;
 import net.lonk.enderite.advancement.BreakBlockWithItemCriterion;
 import net.lonk.enderite.item.ModItems;
 import net.lonk.enderite.util.ModTags;
+import net.lonk.enderite.world.dimension.ModDimensions;
 import net.minecraft.advancement.*;
 import net.lonk.enderite.block.ModBlocks;
 import net.minecraft.advancement.criterion.*;
@@ -378,9 +379,25 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false
                 )
-                .criterion("leave_void", ChangedDimensionCriterion.Conditions.create(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void")), World.END))
+                .criterion("leave_void", ChangedDimensionCriterion.Conditions.create(ModDimensions.THE_VOID, World.END))
                 .parent(enterTheVoid)
                 .build(consumer, "enderite:escape_void");
+
+        AdvancementEntry getEnderEye = Advancement.Builder.create()
+                .display(
+                        Items.ENDER_EYE,
+                        Text.translatable("advancements.enderite.get_ender_eye.title"),
+                        Text.translatable("advancements.enderite.get_ender_eye.description"),
+                        BACKGROUND_TEXTURE_VOID,
+                        AdvancementFrame.TASK,
+                        true,
+                        true,
+                        false
+                )
+                .criterion("get_ender_eye", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create().items(itemLookup, Items.ENDER_EYE)))
+                .criterion("in_void", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.create().dimension(ModDimensions.THE_VOID)))
+                .parent(enterTheVoid)
+                .build(consumer, "enderite:get_ender_eye");
 
         // endregion
 

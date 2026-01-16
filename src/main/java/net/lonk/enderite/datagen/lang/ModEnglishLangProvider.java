@@ -85,7 +85,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // break bedrock with void-infused pickaxe
         translationBuilder.add("advancements.enderite.unbreakable.title", "Breaking the Rules");
-        translationBuilder.add("advancements.enderite.unbreakable.description", "5 missed calls from Notch");
+        translationBuilder.add("advancements.enderite.unbreakable.description", "Jump");
 
         // kill chicken with enderite sword
         translationBuilder.add("advancements.enderite.overkill.title", "Overkill");
@@ -154,6 +154,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // break spider spawner in mineshaft in void
         translationBuilder.add("advancements.enderite.break_spider_spawner_void.title", "OSHA Violation");
         translationBuilder.add("advancements.enderite.break_spider_spawner_void.description", "Destroy a Spider Spawner in a Void Mineshaft");
+
+        // get eye of ender in void
+        translationBuilder.add("advancements.enderite.get_ender_eye.title", "One Step Closer");
+        translationBuilder.add("advancements.enderite.get_ender_eye.description", "Obtain an Eye of Ender and get one step closer to escaping");
 
         // endregion
 
