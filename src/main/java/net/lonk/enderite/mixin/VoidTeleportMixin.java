@@ -1,6 +1,8 @@
 package net.lonk.enderite.mixin;
 
 import net.lonk.enderite.Enderite;
+import net.lonk.enderite.world.dimension.ModDimensions;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -31,14 +33,22 @@ public abstract class VoidTeleportMixin {
         // Only trigger for players on the server side in the End dimension
         if (entity instanceof ServerPlayerEntity player) {
             // Check if player is in the End
-            if (!player.getWorld().getDimensionEntry().matchesKey(DimensionTypes.THE_END)) {
+            if (player.getWorld().getRegistryKey() != World.END) {
                 if (this.getY() < -100) {
-                    RegistryKey<World> voidWorldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"));
-                    ServerWorld voidWorld = player.getServer().getWorld(voidWorldKey);
+                    if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID) {
+                        AdvancementEntry advancement = player.getServer().getAdvancementLoader()
+                                .get(Identifier.of(Enderite.MOD_ID, "nice_try"));
+
+                        if (advancement != null) {
+                            player.getAdvancementTracker().grantCriterion(advancement, "played_jumped_in_void");
+                        }
+                    }
+
+                    ServerWorld voidWorld = player.getServer().getWorld(ModDimensions.THE_VOID);
 
                     if (voidWorld != null) {
-                        // Teleport to the Void dimension, starting at the top (Y 250)
-                        player.teleport(voidWorld, player.getX(), 250, player.getZ(), Set.of(), player.getYaw(), player.getPitch(), false);
+                        // Teleport to the Void dimension, starting at the top (Y 500)
+                        player.teleport(voidWorld, player.getX(), 500, player.getZ(), Set.of(), player.getYaw(), player.getPitch(), false);
                     }
                 }
             }

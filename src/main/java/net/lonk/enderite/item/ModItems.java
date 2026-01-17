@@ -1,6 +1,7 @@
 package net.lonk.enderite.item;
 
 import net.lonk.enderite.Enderite;
+import net.lonk.enderite.item.custom.VoidInfusedPickaxeItem;
 import net.minecraft.component.type.FoodComponents;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.EquipmentType;
@@ -56,7 +57,7 @@ public class ModItems {
             new SwordItem(ModToolMaterials.VOID_INFUSED, 3, -2.4f, baseSettings("void_infused_sword").rarity(Rarity.RARE).fireproof()));
 
     public static final Item VOID_INFUSED_PICKAXE = registerItem("void_infused_pickaxe",
-            new PickaxeItem(ModToolMaterials.VOID_INFUSED, 1.0f, -2.8f, baseSettings("void_infused_pickaxe").rarity(Rarity.RARE).fireproof()));
+            new VoidInfusedPickaxeItem(ModToolMaterials.VOID_INFUSED, 1.0f, -2.8f, baseSettings("void_infused_pickaxe").rarity(Rarity.RARE).fireproof()));
 
     public static final Item VOID_INFUSED_SHOVEL = registerItem("void_infused_shovel",
             new ShovelItem(ModToolMaterials.VOID_INFUSED, 1.5f, -3.0f, baseSettings("void_infused_shovel").rarity(Rarity.RARE).fireproof()));

@@ -2,24 +2,18 @@ package net.lonk.enderite.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.lonk.enderite.Enderite;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.item.ModItems;
-import net.lonk.enderite.recipe.VoidInfusionRecipe;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
 import net.minecraft.data.recipe.SmithingTransformRecipeJsonBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -73,22 +67,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_AXE, RecipeCategory.TOOLS, ModItems.ENDERITE_AXE);
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_HOE, RecipeCategory.TOOLS, ModItems.ENDERITE_HOE);
 
-                // Void Infusion Recipes
-                offerVoidInfusionRecipe(ModItems.ENDERITE_INGOT, ModItems.VOID_INFUSED_INGOT);
-                offerVoidInfusionRecipe(Items.CHORUS_FRUIT, ModItems.VOID_INFUSED_CHORUS_FRUIT);
-
-                // Tools
-                offerVoidInfusionRecipe(ModItems.ENDERITE_SWORD, ModItems.VOID_INFUSED_SWORD);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_PICKAXE, ModItems.VOID_INFUSED_PICKAXE);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_SHOVEL, ModItems.VOID_INFUSED_SHOVEL);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_AXE, ModItems.VOID_INFUSED_AXE);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_HOE, ModItems.VOID_INFUSED_HOE);
-
-                // Armor
-                offerVoidInfusionRecipe(ModItems.ENDERITE_HELMET, ModItems.VOID_INFUSED_HELMET);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_CHESTPLATE, ModItems.VOID_INFUSED_CHESTPLATE);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_LEGGINGS, ModItems.VOID_INFUSED_LEGGINGS);
-                offerVoidInfusionRecipe(ModItems.ENDERITE_BOOTS, ModItems.VOID_INFUSED_BOOTS);
+                // Void Infusion Recipes are manually created in src/main/resources/data/enderite/recipe/
+                // to avoid datagen serialization issues
             }
 
             private void offerEnderiteUpgradeRecipe(Item input, RecipeCategory category, Item result) {
@@ -97,25 +77,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         )
                         .criterion(hasItem(ModItems.ENDERITE_INGOT), conditionsFromItem(ModItems.ENDERITE_INGOT))
                         .offerTo(exporter, getItemPath(result) + "_smithing");
-            }
-
-            private void offerVoidInfusionRecipe(ItemConvertible input, ItemConvertible output) {
-                offerVoidInfusionRecipe(input, output, 200);
-            }
-
-            private void offerVoidInfusionRecipe(ItemConvertible input, ItemConvertible output, int infusionTime) {
-                VoidInfusionRecipe recipe = new VoidInfusionRecipe(
-                        Ingredient.ofItems(input),
-                        new ItemStack(output.asItem()),
-                        infusionTime
-                );
-
-                Identifier id = Identifier.of(Enderite.MOD_ID, getItemPath(output) + "_from_void_infusion");
-                exporter.accept(
-                        RegistryKey.of(RegistryKeys.RECIPE, id),
-                        recipe,
-                        null
-                );
             }
         };
     }

@@ -38,6 +38,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         translationBuilder.add(ModItems.VOID_INFUSED_SWORD, "Void-Infused Sword");
         translationBuilder.add(ModItems.VOID_INFUSED_PICKAXE, "Void-Infused Pickaxe");
+        translationBuilder.add(ModItems.VOID_INFUSED_PICKAXE.getTranslationKey() + ".tooltip", "A gateway to the Void");
         translationBuilder.add(ModItems.VOID_INFUSED_SHOVEL, "Void-Infused Shovel");
         translationBuilder.add(ModItems.VOID_INFUSED_AXE, "Void-Infused Axe");
         translationBuilder.add(ModItems.VOID_INFUSED_HOE, "Void-Infused Hoe");
@@ -127,9 +128,17 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("advancements.enderite.enter_the_void.title", "Into the Void");
         translationBuilder.add("advancements.enderite.enter_the_void.description", "Fall beyond the limits of reality itself");
 
-        // enter the void
+        // escape the void
         translationBuilder.add("advancements.enderite.escape_void.title", "Defying the Depths");
         translationBuilder.add("advancements.enderite.escape_void.description", "Find a way to escape the Void and end up in the End");
+
+        // die in the void
+        translationBuilder.add("advancements.enderite.die_in_void.title", "Bad Dream");
+        translationBuilder.add("advancements.enderite.die_in_void.description", "Escape the Void by dying (it's not the only way to escape)");
+
+        // jump in the void in the void
+        translationBuilder.add("advancements.enderite.nice_try.title", "Nice Try");
+        translationBuilder.add("advancements.enderite.nice_try.description", "It's not going to be that easy to escape");
 
         // enter a structure in the void
         translationBuilder.add("advancements.enderite.void_structure.title", "A Trip Down Memory Lane");

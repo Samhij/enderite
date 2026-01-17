@@ -1,0 +1,8 @@
+{
+  "type": "enderite:void_infusion",
+  "ingredient": "enderite:enderite_leggings",
+  "result": {
+    "id": "enderite:void_infused_leggings",
+    "count": 1
+  }
+}

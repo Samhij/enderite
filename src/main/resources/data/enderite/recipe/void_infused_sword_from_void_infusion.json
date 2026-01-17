@@ -1,0 +1,8 @@
+{
+  "type": "enderite:void_infusion",
+  "ingredient": "enderite:enderite_sword",
+  "result": {
+    "id": "enderite:void_infused_sword",
+    "count": 1
+  }
+}

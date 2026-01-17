@@ -1,0 +1,8 @@
+{
+  "type": "enderite:void_infusion",
+  "ingredient": "enderite:enderite_axe",
+  "result": {
+    "id": "enderite:void_infused_axe",
+    "count": 1
+  }
+}

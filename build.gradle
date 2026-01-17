@@ -75,6 +75,12 @@ jar {
     }
 }
 
+// Note: Void infusion recipes use string format for ingredients which causes
+// "empty ingredients" warnings in the recipe book system, but the recipes work fine.
+// The warnings are harmless - they only affect recipe book display, not the actual
+// void infusion table functionality. The VoidInfusionTableBlockEntity uses the
+// recipe manager directly, bypassing the recipe book system.
+
 // configure the maven publication
 publishing {
     publications {

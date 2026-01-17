@@ -1,0 +1,8 @@
+{
+  "type": "enderite:void_infusion",
+  "ingredient": "enderite:enderite_boots",
+  "result": {
+    "id": "enderite:void_infused_boots",
+    "count": 1
+  }
+}

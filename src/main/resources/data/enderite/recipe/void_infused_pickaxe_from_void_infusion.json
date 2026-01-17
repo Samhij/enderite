@@ -1,0 +1,8 @@
+{
+  "type": "enderite:void_infusion",
+  "ingredient": "enderite:enderite_pickaxe",
+  "result": {
+    "id": "enderite:void_infused_pickaxe",
+    "count": 1
+  }
+}

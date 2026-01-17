@@ -9,6 +9,7 @@
     "CarvedPumpkinBlockMixin",
     "EndermanEntityMixin",
     "FallDamageMixin",
+    "PlayerDeathMixin",
     "VoidTeleportMixin"
   ],
   "client": [

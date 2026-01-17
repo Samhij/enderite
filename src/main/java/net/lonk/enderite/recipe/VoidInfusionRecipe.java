@@ -14,6 +14,8 @@ import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class VoidInfusionRecipe implements Recipe<SingleStackRecipeInput> {
     private final Ingredient ingredient;
     private final ItemStack result;
@@ -71,7 +73,7 @@ public class VoidInfusionRecipe implements Recipe<SingleStackRecipeInput> {
         public static final MapCodec<VoidInfusionRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(
                         Ingredient.CODEC.fieldOf("ingredient").forGetter(VoidInfusionRecipe::getIngredient),
-                        ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(VoidInfusionRecipe::getResultStack),
+                        ItemStack.CODEC.fieldOf("result").forGetter(VoidInfusionRecipe::getResultStack),
                         Codec.INT.optionalFieldOf("infusionTime", 200).forGetter(VoidInfusionRecipe::getInfusionTime)
                 ).apply(instance, VoidInfusionRecipe::new)
         );

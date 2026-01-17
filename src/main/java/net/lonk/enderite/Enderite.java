@@ -1,6 +1,7 @@
 package net.lonk.enderite;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.lonk.enderite.advancement.BreakBlockWithItemCriterion;
@@ -14,14 +15,8 @@ import net.lonk.enderite.item.ModItems;
 import net.lonk.enderite.recipe.ModRecipeTypes;
 import net.lonk.enderite.screen.ModScreenHandlers;
 import net.lonk.enderite.util.ModLootTableModifiers;
-import net.lonk.enderite.world.dimension.ModDimensions;
 import net.lonk.enderite.world.gen.ModWorldGeneration;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.item.BedItem;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,5 +49,6 @@ public class Enderite implements ModInitializer {
     private void registerEvents() {
         UseBlockCallback.EVENT.register(ModEvents::sendBedMessage);
         UseBlockCallback.EVENT.register(ModEvents::explodeBed);
+        ServerTickEvents.END_WORLD_TICK.register(ModEvents::onServerTick);
     }
 }
