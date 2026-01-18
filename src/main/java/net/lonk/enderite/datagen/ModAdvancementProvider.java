@@ -116,7 +116,6 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .criterion("enderite_axe", InventoryChangedCriterion.Conditions.items(ModItems.ENDERITE_AXE))
                 .criterion("enderite_shovel", InventoryChangedCriterion.Conditions.items(ModItems.ENDERITE_SHOVEL))
                 .criterion("enderite_hoe", InventoryChangedCriterion.Conditions.items(ModItems.ENDERITE_HOE))
-                .criterion("enderite_ingot", InventoryChangedCriterion.Conditions.items(ModItems.ENDERITE_INGOT))
                 .requirements(AdvancementRequirements.anyOf(List.of(
                         "enderite_helmet",
                         "enderite_chestplate",
@@ -126,8 +125,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         "enderite_pickaxe",
                         "enderite_axe",
                         "enderite_shovel",
-                        "enderite_hoe",
-                        "enderite_ingot"
+                        "enderite_hoe"
                 ))).build(consumer, "enderite:upgraded_again");
 
         AdvancementEntry voidKnight = Advancement.Builder.create()

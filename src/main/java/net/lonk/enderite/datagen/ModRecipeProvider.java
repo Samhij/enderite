@@ -57,7 +57,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .input('O', Blocks.CRYING_OBSIDIAN)
                         .input('E', Items.ENDER_EYE)
                         .input('B', Blocks.END_STONE_BRICKS)
-                        .input('C', Blocks.CHORUS_PLANT)
+                        .input('C', Blocks.CHORUS_FLOWER)
                         .criterion(hasItem(Items.ENDER_EYE), conditionsFromItem(Items.ENDER_EYE))
                         .offerTo(exporter);
 
