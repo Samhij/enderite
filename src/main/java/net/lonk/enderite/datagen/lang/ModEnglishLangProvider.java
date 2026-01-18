@@ -22,7 +22,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.ENDERITE_INGOT, "Enderite Ingot");
         translationBuilder.add(ModItems.RAW_ENDERITE, "Raw Enderite");
         translationBuilder.add(ModItems.ENDERITE_SCRAP, "Enderite Scrap");
-        translationBuilder.add(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
+        translationBuilder.add(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, "Enderite Upgrade");
         translationBuilder.add(ModItems.VOID_INFUSED_INGOT, "Void-Infused Ingot");
         translationBuilder.add(ModItems.VOID_INFUSED_CHORUS_FRUIT, "Void-Infused Chorus Fruit");
 
