@@ -3,6 +3,8 @@ package net.lonk.enderite.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
@@ -34,7 +36,16 @@ public class VoidInfusionRecipe implements Recipe<SingleStackRecipeInput> {
 
     @Override
     public ItemStack craft(SingleStackRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
-        return this.result.copy();
+        ItemStack output = this.result.copy();
+        ItemStack inputStack = input.item();
+
+        // Copy all components from input to output (enchantments, armor trims, etc.)
+        output.applyComponentsFrom(inputStack.getComponents());
+
+        // Reset damage to 0 (repair the item)
+        output.setDamage(0);
+
+        return output;
     }
 
     @Override

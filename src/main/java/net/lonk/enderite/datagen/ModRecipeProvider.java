@@ -61,11 +61,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion(hasItem(Items.ENDER_EYE), conditionsFromItem(Items.ENDER_EYE))
                         .offerTo(exporter);
 
+                // Tools
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_SWORD, RecipeCategory.COMBAT, ModItems.ENDERITE_SWORD);
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_PICKAXE, RecipeCategory.TOOLS, ModItems.ENDERITE_PICKAXE);
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_SHOVEL, RecipeCategory.TOOLS, ModItems.ENDERITE_SHOVEL);
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_AXE, RecipeCategory.TOOLS, ModItems.ENDERITE_AXE);
                 offerEnderiteUpgradeRecipe(Items.NETHERITE_HOE, RecipeCategory.TOOLS, ModItems.ENDERITE_HOE);
+
+                // Armor
+                offerEnderiteUpgradeRecipe(Items.NETHERITE_HELMET, RecipeCategory.COMBAT, ModItems.ENDERITE_HELMET);
+                offerEnderiteUpgradeRecipe(Items.NETHERITE_CHESTPLATE, RecipeCategory.COMBAT, ModItems.ENDERITE_CHESTPLATE);
+                offerEnderiteUpgradeRecipe(Items.NETHERITE_LEGGINGS, RecipeCategory.COMBAT, ModItems.ENDERITE_LEGGINGS);
+                offerEnderiteUpgradeRecipe(Items.NETHERITE_BOOTS, RecipeCategory.COMBAT, ModItems.ENDERITE_BOOTS);
 
                 // Void Infusion Recipes are manually created in src/main/resources/data/enderite/recipe/
                 // to avoid datagen serialization issues

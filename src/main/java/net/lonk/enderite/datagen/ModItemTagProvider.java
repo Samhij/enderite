@@ -72,5 +72,27 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ModItems.VOID_INFUSED_LEGGINGS)
                 .add(ModItems.VOID_INFUSED_BOOTS)
         ;
+
+        getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+                .add(ModItems.ENDERITE_HELMET)
+                .add(ModItems.ENDERITE_CHESTPLATE)
+                .add(ModItems.ENDERITE_LEGGINGS)
+                .add(ModItems.ENDERITE_BOOTS)
+                .add(ModItems.ENDERITE_SWORD)
+                .add(ModItems.ENDERITE_PICKAXE)
+                .add(ModItems.ENDERITE_SHOVEL)
+                .add(ModItems.ENDERITE_AXE)
+                .add(ModItems.ENDERITE_HOE)
+
+                .add(ModItems.VOID_INFUSED_HELMET)
+                .add(ModItems.VOID_INFUSED_CHESTPLATE)
+                .add(ModItems.VOID_INFUSED_LEGGINGS)
+                .add(ModItems.VOID_INFUSED_BOOTS)
+                .add(ModItems.VOID_INFUSED_SWORD)
+                .add(ModItems.VOID_INFUSED_PICKAXE)
+                .add(ModItems.VOID_INFUSED_SHOVEL)
+                .add(ModItems.VOID_INFUSED_AXE)
+                .add(ModItems.VOID_INFUSED_HOE)
+        ;
     }
 }
