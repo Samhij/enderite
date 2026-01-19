@@ -1,6 +1,7 @@
 {
   "type": "enderite:void_infusion",
-  "ingredient": "enderite:enderite_helmet",
+  "base_ingredient": "enderite:enderite_helmet",
+  "void_ingredient": "enderite:void_infused_ingot",
   "result": {
     "id": "enderite:void_infused_helmet",
     "count": 1

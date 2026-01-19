@@ -22,16 +22,16 @@ public class ModArmorMaterials {
     public static final ArmorMaterial ENDERITE_ARMOR_MATERIAL = new ArmorMaterial(
             33,
             Util.make(new EnumMap<>(EquipmentType.class), map -> {
-                map.put(EquipmentType.BOOTS, 3);
-                map.put(EquipmentType.LEGGINGS, 6);
-                map.put(EquipmentType.CHESTPLATE, 8);
-                map.put(EquipmentType.HELMET, 3);
-                map.put(EquipmentType.BODY, 11);
+                map.put(EquipmentType.BOOTS, 4);
+                map.put(EquipmentType.LEGGINGS, 7);
+                map.put(EquipmentType.CHESTPLATE, 9);
+                map.put(EquipmentType.HELMET, 4);
+                map.put(EquipmentType.BODY, 12);
             }),
             10,
             SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
             2.0f,
-            0.0f,
+            0.1f,
             ModTags.Items.ENDERITE_REPAIR,
             ENDERITE_KEY
     );
@@ -39,10 +39,10 @@ public class ModArmorMaterials {
     public static final ArmorMaterial VOID_INFUSED_ARMOR_MATERIAL = new ArmorMaterial(
             40,
             Util.make(new EnumMap<>(EquipmentType.class), map -> {
-                map.put(EquipmentType.BOOTS, 4);
-                map.put(EquipmentType.LEGGINGS, 7);
+                map.put(EquipmentType.BOOTS, 5);
+                map.put(EquipmentType.LEGGINGS, 8);
                 map.put(EquipmentType.CHESTPLATE, 10);
-                map.put(EquipmentType.HELMET, 4);
+                map.put(EquipmentType.HELMET, 5);
                 map.put(EquipmentType.BODY, 13);
             }),
             25,

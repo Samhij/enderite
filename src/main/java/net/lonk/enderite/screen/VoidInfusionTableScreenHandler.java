@@ -16,23 +16,27 @@ public class VoidInfusionTableScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
 
-    public static final int INPUT_SLOT = 0;
-    public static final int FUEL_SLOT = 1;
-    public static final int OUTPUT_SLOT = 2;
+    public static final int VOID_INPUT_SLOT = 0;  // Left slot (added first at x=26)
+    public static final int BASE_INPUT_SLOT = 1;  // Middle/right slot (added second at x=56)
+    public static final int FUEL_SLOT = 2;
+    public static final int OUTPUT_SLOT = 3;
 
     public VoidInfusionTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(4));
+        this(syncId, playerInventory, new SimpleInventory(4), new ArrayPropertyDelegate(4));
     }
 
     public VoidInfusionTableScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(ModScreenHandlers.VOID_INFUSION_TABLE_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 3);
+        checkSize(inventory, 4);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         inventory.onOpen(playerInventory.player);
 
-        // Input slot - top slot like furnace input, accepts any item with a recipe
-        this.addSlot(new Slot(inventory, INPUT_SLOT, 56, 17));
+        // Void ingredient slot - left slot for void-infused ingot
+        this.addSlot(new Slot(inventory, VOID_INPUT_SLOT, 26, 17));
+
+        // Base input slot - middle slot, accepts any item with a recipe
+        this.addSlot(new Slot(inventory, BASE_INPUT_SLOT, 56, 17));
 
         // Fuel slot (dragon's breath) - bottom slot like furnace fuel
         this.addSlot(new Slot(inventory, FUEL_SLOT, 56, 53) {
@@ -115,34 +119,29 @@ public class VoidInfusionTableScreenHandler extends ScreenHandler {
                 }
             } else {
                 // Moving from player inventory to machine
+                boolean inserted = false;
+
                 if (originalStack.isOf(Items.DRAGON_BREATH)) {
                     // Dragon's breath goes to fuel slot
-                    if (!this.insertItem(originalStack, FUEL_SLOT, FUEL_SLOT + 1, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!originalStack.isEmpty()) {
-                    // Try to put any other item in the input slot (it will be validated by the block entity)
-                    if (!this.insertItem(originalStack, INPUT_SLOT, INPUT_SLOT + 1, false)) {
-                        // If it doesn't fit in input, move between main inventory and hotbar
-                        if (invSlot < this.inventory.size() + 27) {
-                            if (!this.insertItem(originalStack, this.inventory.size() + 27, this.slots.size(), false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        } else {
-                            if (!this.insertItem(originalStack, this.inventory.size(), this.inventory.size() + 27, false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                } else if (invSlot < this.inventory.size() + 27) {
-                    // From main inventory to hotbar
-                    if (!this.insertItem(originalStack, this.inventory.size() + 27, this.slots.size(), false)) {
-                        return ItemStack.EMPTY;
-                    }
+                    inserted = this.insertItem(originalStack, FUEL_SLOT, FUEL_SLOT + 1, false);
+                } else if (originalStack.isOf(ModItems.VOID_INFUSED_INGOT)) {
+                    // Void-infused ingot ALWAYS goes to void ingredient slot first
+                    inserted = this.insertItem(originalStack, VOID_INPUT_SLOT, VOID_INPUT_SLOT + 1, false);
                 } else {
-                    // From hotbar to main inventory
-                    if (!this.insertItem(originalStack, this.inventory.size(), this.inventory.size() + 27, false)) {
-                        return ItemStack.EMPTY;
+                    // Try to put any other item in the base input slot (it will be validated by the block entity)
+                    inserted = this.insertItem(originalStack, BASE_INPUT_SLOT, BASE_INPUT_SLOT + 1, false);
+                }
+
+                // If we couldn't insert into the machine, move between main inventory and hotbar
+                if (!inserted) {
+                    if (invSlot < this.inventory.size() + 27) {
+                        if (!this.insertItem(originalStack, this.inventory.size() + 27, this.slots.size(), false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else {
+                        if (!this.insertItem(originalStack, this.inventory.size(), this.inventory.size() + 27, false)) {
+                            return ItemStack.EMPTY;
+                        }
                     }
                 }
             }

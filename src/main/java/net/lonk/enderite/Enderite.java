@@ -1,6 +1,7 @@
 package net.lonk.enderite;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -9,7 +10,8 @@ import net.lonk.enderite.block.ModBlockEntities;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.entity.custom.EnderiteGolemEntity;
 import net.lonk.enderite.entity.ModEntities;
-import net.lonk.enderite.event.ModEvents;
+import net.lonk.enderite.event.ArmorBuffEvents;
+import net.lonk.enderite.event.VoidDimensionEvents;
 import net.lonk.enderite.item.ModItemGroups;
 import net.lonk.enderite.item.ModItems;
 import net.lonk.enderite.recipe.ModRecipeTypes;
@@ -47,8 +49,11 @@ public class Enderite implements ModInitializer {
     }
 
     private void registerEvents() {
-        UseBlockCallback.EVENT.register(ModEvents::sendBedMessage);
-        UseBlockCallback.EVENT.register(ModEvents::explodeBed);
-        ServerTickEvents.END_WORLD_TICK.register(ModEvents::onServerTick);
+        UseBlockCallback.EVENT.register(VoidDimensionEvents::sendBedMessage);
+        UseBlockCallback.EVENT.register(VoidDimensionEvents::explodeBed);
+        ServerTickEvents.END_WORLD_TICK.register(VoidDimensionEvents::onServerTick);
+
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register(ArmorBuffEvents::enderiteLeggings);
+        ServerLivingEntityEvents.AFTER_DEATH.register(VoidDimensionEvents::onPlayerDeath);
     }
 }
