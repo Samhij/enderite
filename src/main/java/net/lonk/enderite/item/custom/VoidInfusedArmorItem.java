@@ -38,10 +38,7 @@ public class VoidInfusedArmorItem extends ArmorItem {
                 .getOrThrow(Enchantments.BINDING_CURSE);
 
         if (EnchantmentHelper.getLevel(bindingCurse, stack) == 0) {
-            ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
-
-            builder.add(bindingCurse, 1);
-            stack.set(DataComponentTypes.ENCHANTMENTS, builder.build());
+            stack.addEnchantment(bindingCurse, 1);
         }
     }
 
