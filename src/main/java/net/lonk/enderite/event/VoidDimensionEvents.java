@@ -1,9 +1,12 @@
 package net.lonk.enderite.event;
 
+import net.lonk.enderite.Enderite;
 import net.lonk.enderite.world.dimension.ModDimensions;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BedItem;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -11,10 +14,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
-public class ModEvents {
+public class VoidDimensionEvents {
     private static int tntRainTimer = 0;
     private static final int TNT_RAIN_INTERVAL = 200; // 10 seconds (20 ticks per second)
 
@@ -83,6 +87,22 @@ public class ModEvents {
                     TntEntity tnt = new TntEntity(world, x, y, z, null);
                     tnt.setFuse(80); // 4 seconds fuse
                     world.spawnEntity(tnt);
+                }
+            }
+        }
+    }
+
+    public static void onPlayerDeath(LivingEntity entity, DamageSource damageSource) {
+        if (entity instanceof ServerPlayerEntity player) {
+            Enderite.LOGGER.info("Player {} died in dimension {}", player.getName().getString(), player.getWorld().getRegistryKey().getValue());
+            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID) {
+                Enderite.LOGGER.info("Player {} died in The Void dimension - granting advancement", player.getName().getString());
+                var advancement = player.getServer().getAdvancementLoader().get(Identifier.of(Enderite.MOD_ID, "die_in_void"));
+                if (advancement != null) {
+                    Enderite.LOGGER.info("Granting advancement die_in_void criterion player_died to player {}", player.getName().getString());
+                    player.getAdvancementTracker().grantCriterion(advancement, "player_died");
+                } else {
+                    Enderite.LOGGER.warn("Advancement die_in_void not found for player {}", player.getName().getString());
                 }
             }
         }

@@ -1,5 +1,6 @@
 package net.lonk.enderite.screen;
 
+import net.lonk.enderite.Enderite;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.RenderLayer;
@@ -9,7 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class VoidInfusionTableScreen extends HandledScreen<VoidInfusionTableScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.ofVanilla("textures/gui/container/furnace.png");
+    private static final Identifier TEXTURE = Identifier.of(Enderite.MOD_ID, "textures/gui/container/void_infusion_table.png");
     private static final Identifier LIT_PROGRESS_TEXTURE = Identifier.ofVanilla("container/furnace/lit_progress");
     private static final Identifier BURN_PROGRESS_TEXTURE = Identifier.ofVanilla("container/furnace/burn_progress");
 

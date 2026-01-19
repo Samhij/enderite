@@ -1,7 +1,10 @@
 package net.lonk.enderite.item;
 
 import net.lonk.enderite.Enderite;
+import net.lonk.enderite.item.custom.VoidInfusedArmorItem;
 import net.lonk.enderite.item.custom.VoidInfusedPickaxeItem;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FoodComponents;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.EquipmentType;
@@ -10,10 +13,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 
 import java.util.List;
 
@@ -77,30 +77,35 @@ public class ModItems {
 
     // region Armor
 
+    // buff: don't aggro endermen when looking at them (EndermanEntityMixin)
     public static final Item ENDERITE_HELMET = registerItem("enderite_helmet",
             new ArmorItem(ModArmorMaterials.ENDERITE_ARMOR_MATERIAL, EquipmentType.HELMET, baseSettings("enderite_helmet").fireproof()));
 
+    // buff: integrated elytra
     public static final Item ENDERITE_CHESTPLATE = registerItem("enderite_chestplate",
-            new ArmorItem(ModArmorMaterials.ENDERITE_ARMOR_MATERIAL, EquipmentType.CHESTPLATE, baseSettings("enderite_chestplate").fireproof()));
+            new ArmorItem(ModArmorMaterials.ENDERITE_ARMOR_MATERIAL, EquipmentType.CHESTPLATE, baseSettings("enderite_chestplate").fireproof().component(DataComponentTypes.GLIDER, Unit.INSTANCE)));
 
+    // buff: 8% projectile negation chance (ModEvents)
     public static final Item ENDERITE_LEGGINGS = registerItem("enderite_leggings",
             new ArmorItem(ModArmorMaterials.ENDERITE_ARMOR_MATERIAL, EquipmentType.LEGGINGS, baseSettings("enderite_leggings").fireproof()));
 
+    // buff: +1 safe fall damage
     public static final Item ENDERITE_BOOTS = registerItem("enderite_boots",
             new ArmorItem(ModArmorMaterials.ENDERITE_ARMOR_MATERIAL, EquipmentType.BOOTS, baseSettings("enderite_boots").fireproof()));
 
-
+    // buff: grants luck effect when wearing (VoidInfusedArmorItem)
+    // downside:
     public static final Item VOID_INFUSED_HELMET = registerItem("void_infused_helmet",
-            new ArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.HELMET, baseSettings("void_infused_helmet").rarity(Rarity.RARE).fireproof()));
+            new VoidInfusedArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.HELMET, baseSettings("void_infused_helmet").rarity(Rarity.RARE).fireproof()));
 
     public static final Item VOID_INFUSED_CHESTPLATE = registerItem("void_infused_chestplate",
-            new ArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.CHESTPLATE, baseSettings("void_infused_chestplate").rarity(Rarity.RARE).fireproof()));
+            new VoidInfusedArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.CHESTPLATE, baseSettings("void_infused_chestplate").rarity(Rarity.RARE).fireproof().component(DataComponentTypes.GLIDER, Unit.INSTANCE)));
 
     public static final Item VOID_INFUSED_LEGGINGS = registerItem("void_infused_leggings",
-            new ArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.LEGGINGS, baseSettings("void_infused_leggings").rarity(Rarity.RARE).fireproof()));
+            new VoidInfusedArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.LEGGINGS, baseSettings("void_infused_leggings").rarity(Rarity.RARE).fireproof()));
 
     public static final Item VOID_INFUSED_BOOTS = registerItem("void_infused_boots",
-            new ArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.BOOTS, baseSettings("void_infused_boots").rarity(Rarity.RARE).fireproof()));
+            new VoidInfusedArmorItem(ModArmorMaterials.VOID_INFUSED_ARMOR_MATERIAL, EquipmentType.BOOTS, baseSettings("void_infused_boots").rarity(Rarity.RARE).fireproof()));
 
     // endregion
 

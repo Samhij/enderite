@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
@@ -32,19 +33,21 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedInventory, NamedScreenHandlerFactory {
-    private static final int INPUT_SLOT = 0;
-    private static final int FUEL_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
+    private static final int VOID_INPUT_SLOT = 0;  // Left slot
+    private static final int BASE_INPUT_SLOT = 1;  // Middle/right slot
+    private static final int FUEL_SLOT = 2;
+    private static final int OUTPUT_SLOT = 3;
     private static final int INFUSION_TIME = 12000; // 10 minutes (12000 ticks)
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
     private int progress = 0;
     private int fuelRemaining = 0;
     private int fuelTime = 0; // Max burn time for current fuel
-    
+
     // Cache for recipe lookup optimization
     private RecipeEntry<VoidInfusionRecipe> cachedRecipe = null;
-    private ItemStack cachedInputStack = ItemStack.EMPTY;
+    private ItemStack cachedBaseInputStack = ItemStack.EMPTY;
+    private ItemStack cachedVoidInputStack = ItemStack.EMPTY;
 
     protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
@@ -103,32 +106,38 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     }
 
     /**
-     * Gets the cached recipe for the current input stack, or performs a lookup if the cache is invalid.
+     * Gets the cached recipe for the current input stacks, or performs a lookup if the cache is invalid.
      * This method significantly improves performance by avoiding repeated recipe manager queries.
-     * 
+     *
      * Note: Stack count is not considered for cache validation because VoidInfusionRecipe matching
-     * only depends on item type and components, not quantity (as per SingleStackRecipeInput behavior).
+     * only depends on item type and components, not quantity.
      */
     private RecipeEntry<VoidInfusionRecipe> getCachedRecipe() {
         if (world == null || !(world instanceof ServerWorld)) {
             return null;
         }
 
-        ItemStack inputStack = inventory.get(INPUT_SLOT);
+        ItemStack baseInputStack = inventory.get(BASE_INPUT_SLOT);
+        ItemStack voidInputStack = inventory.get(VOID_INPUT_SLOT);
 
         // Check if cache is still valid (item type and components must match)
-        if (cachedRecipe != null && ItemStack.areItemsAndComponentsEqual(cachedInputStack, inputStack)) {
+        if (cachedRecipe != null &&
+            ItemStack.areItemsAndComponentsEqual(cachedBaseInputStack, baseInputStack) &&
+            ItemStack.areItemsAndComponentsEqual(cachedVoidInputStack, voidInputStack)) {
             return cachedRecipe;
         }
 
         // Cache is invalid, perform lookup and update cache
-        if (inputStack.isEmpty()) {
+        if (baseInputStack.isEmpty()) {
             cachedRecipe = null;
-            cachedInputStack = ItemStack.EMPTY;
+            cachedBaseInputStack = ItemStack.EMPTY;
+            cachedVoidInputStack = ItemStack.EMPTY;
             return null;
         }
 
-        SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(inputStack);
+        // Void ingredient can be empty for recipes that don't require it
+        VoidInfusionRecipe.VoidInfusionRecipeInput recipeInput =
+            new VoidInfusionRecipe.VoidInfusionRecipeInput(baseInputStack, voidInputStack);
         ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
 
         cachedRecipe = recipeManager.values()
@@ -142,7 +151,8 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
                 .findFirst()
                 .orElse(null);
 
-        cachedInputStack = inputStack.copy();
+        cachedBaseInputStack = baseInputStack.copy();
+        cachedVoidInputStack = voidInputStack.copy();
 
         return cachedRecipe;
     }
@@ -155,7 +165,8 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         boolean dirty = false;
 
         // Check if we have valid inputs
-        ItemStack inputStack = inventory.get(INPUT_SLOT);
+        ItemStack baseInputStack = inventory.get(BASE_INPUT_SLOT);
+        ItemStack voidInputStack = inventory.get(VOID_INPUT_SLOT);
         ItemStack fuelStack = inventory.get(FUEL_SLOT);
         ItemStack outputStack = inventory.get(OUTPUT_SLOT);
 
@@ -194,7 +205,12 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
 
                     // Complete the infusion
                     if (progress >= recipeTime) {
-                        inputStack.decrement(1);
+                        baseInputStack.decrement(1);
+                        // Only consume void ingredient if the recipe requires it
+                        Ingredient voidIng = recipe.getVoidIngredient();
+                        if (!voidInputStack.isEmpty() && voidIng != null && !voidIng.isEmpty()) {
+                            voidInputStack.decrement(1);
+                        }
 
                         if (outputStack.isEmpty()) {
                             inventory.set(OUTPUT_SLOT, recipeOutput.copy());
@@ -296,7 +312,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         if (side == Direction.DOWN) {
             return new int[]{OUTPUT_SLOT};
         } else if (side == Direction.UP) {
-            return new int[]{INPUT_SLOT};
+            return new int[]{BASE_INPUT_SLOT, VOID_INPUT_SLOT};
         } else {
             return new int[]{FUEL_SLOT};
         }
@@ -304,11 +320,25 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        if (slot == INPUT_SLOT) {
+        if (slot == BASE_INPUT_SLOT || slot == VOID_INPUT_SLOT) {
             // Check if there's a recipe for this item using optimized lookup
             if (world instanceof ServerWorld && !stack.isEmpty()) {
-                SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(stack);
                 ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+                // For base input, we need to check if any recipe accepts this item in the base slot
+                // For void input, we need to check if it can be a void ingredient
+                ItemStack otherStack = slot == BASE_INPUT_SLOT ?
+                    inventory.get(VOID_INPUT_SLOT) : inventory.get(BASE_INPUT_SLOT);
+
+                // If the other slot is empty, we can't validate yet, so allow insertion
+                if (otherStack.isEmpty()) {
+                    return true;
+                }
+
+                // Create recipe input based on which slot we're inserting into
+                VoidInfusionRecipe.VoidInfusionRecipeInput recipeInput = slot == BASE_INPUT_SLOT ?
+                    new VoidInfusionRecipe.VoidInfusionRecipeInput(stack, otherStack) :
+                    new VoidInfusionRecipe.VoidInfusionRecipeInput(otherStack, stack);
+
                 return recipeManager.values()
                         .stream()
                         .filter(recipe -> recipe.value().getType() == ModRecipeTypes.VOID_INFUSION)
@@ -366,16 +396,25 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        // Invalidate cache when input slot changes to a different item
-        if (slot == INPUT_SLOT) {
-            ItemStack oldStack = inventory.get(INPUT_SLOT);
+        // Invalidate cache when input slots change to different items
+        if (slot == BASE_INPUT_SLOT) {
+            ItemStack oldStack = inventory.get(BASE_INPUT_SLOT);
             // Only invalidate if the item or components actually changed
             if (!ItemStack.areItemsAndComponentsEqual(oldStack, stack)) {
                 cachedRecipe = null;
-                cachedInputStack = ItemStack.EMPTY;
+                cachedBaseInputStack = ItemStack.EMPTY;
+                cachedVoidInputStack = ItemStack.EMPTY;
+            }
+        } else if (slot == VOID_INPUT_SLOT) {
+            ItemStack oldStack = inventory.get(VOID_INPUT_SLOT);
+            // Only invalidate if the item or components actually changed
+            if (!ItemStack.areItemsAndComponentsEqual(oldStack, stack)) {
+                cachedRecipe = null;
+                cachedBaseInputStack = ItemStack.EMPTY;
+                cachedVoidInputStack = ItemStack.EMPTY;
             }
         }
-        
+
         inventory.set(slot, stack);
         if (stack.getCount() > getMaxCountPerStack()) {
             stack.setCount(getMaxCountPerStack());

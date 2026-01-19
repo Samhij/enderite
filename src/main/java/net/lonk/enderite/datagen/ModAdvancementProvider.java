@@ -10,23 +10,29 @@ import net.lonk.enderite.world.dimension.ModDimensions;
 import net.minecraft.advancement.*;
 import net.lonk.enderite.block.ModBlocks;
 import net.minecraft.advancement.criterion.*;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.predicate.BlockPredicate;
 import net.minecraft.predicate.DamagePredicate;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.entity.*;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.predicate.item.ItemSubPredicateTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureKeys;
+import net.minecraft.world.gen.structure.StructureType;
+import net.minecraft.world.gen.structure.Structures;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +46,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
     @Override
     public void generateAdvancement(RegistryWrapper.WrapperLookup wrapperLookup, Consumer<AdvancementEntry> consumer) {
-        final Identifier BACKGROUND_TEXTURE = Identifier.of("minecraft", "textures/block/end_stone.png");
-        final Identifier BACKGROUND_TEXTURE_VOID = Identifier.of("minecraft", "textures/block/sculk_sensor_bottom.png");
+        final Identifier BACKGROUND_TEXTURE = Identifier.ofVanilla("textures/gui/advancements/backgrounds/end.png");
+        final Identifier BACKGROUND_TEXTURE_VOID = Identifier.ofVanilla("textures/block/sculk_sensor_bottom.png");
 
         var structureLookup = wrapperLookup.getOrThrow(RegistryKeys.STRUCTURE);
         var itemLookup = wrapperLookup.getOrThrow(RegistryKeys.ITEM);
@@ -52,7 +58,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         AdvancementEntry root = Advancement.Builder.create()
                 .display(
-                        ModItems.RAW_ENDERITE,
+                        ModBlocks.ENDERITE_ORE,
                         Text.translatable("advancements.enderite.root.title"),
                         Text.translatable("advancements.enderite.root.description"),
                         BACKGROUND_TEXTURE,
@@ -376,7 +382,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false
                 )
-                // Criterion is manually granted in PlayerDeathMixin
+                // Criterion is manually granted in VoidPlayerMixin
                 .criterion("player_died", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
                         .items(itemLookup, Items.BARRIER)
                         .count(NumberRange.IntRange.exactly(0))
@@ -395,8 +401,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         true
                 )
-                // Criterion is manually granted in VoidTeleportMixin
-                .criterion("played_jumped_in_void", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
+                // Criterion is manually granted in VoidPlayerMixin
+                .criterion("player_jumped_in_void", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
                         .items(itemLookup, Items.BARRIER)
                         .count(NumberRange.IntRange.exactly(0))
                         .build()))
@@ -414,8 +420,16 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false
                 )
-                .criterion("get_ender_eye", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create().items(itemLookup, Items.ENDER_EYE)))
-                .criterion("in_void", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.create().dimension(ModDimensions.THE_VOID)))
+                .criterion("get_ender_eye", Criteria.INVENTORY_CHANGED.create(
+                        new InventoryChangedCriterion.Conditions(
+                                Optional.of(EntityPredicate.contextPredicateFromEntityPredicate(
+                                        EntityPredicate.Builder.create()
+                                            .location(LocationPredicate.Builder.createDimension(ModDimensions.THE_VOID))
+                                )),
+                                InventoryChangedCriterion.Conditions.Slots.ANY,
+                                List.of(ItemPredicate.Builder.create().items(itemLookup, Items.ENDER_EYE).build())
+                        )
+                ))
                 .parent(enterTheVoid)
                 .build(consumer, "enderite:get_ender_eye");
 
@@ -454,7 +468,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 )
                 .criterion("trade_villager", VillagerTradeCriterion.Conditions.create(
                         EntityPredicate.Builder.create()
-                                .location(LocationPredicate.Builder.create().dimension(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))))
+                                .location(LocationPredicate.Builder.create().dimension(ModDimensions.THE_VOID))
                 )).parent(voidStructure)
                 .build(consumer, "enderite:trade_with_villager_void");
 
@@ -465,19 +479,17 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         Text.translatable("advancements.enderite.loot_bastion_void.description"),
                         BACKGROUND_TEXTURE_VOID,
                         AdvancementFrame.TASK,
-                        true,
-                        true,
-                        true
+                        true, true, true
                 )
-                .criterion("loot_bastion_hoglin_stable", PlayerGeneratesContainerLootCriterion.Conditions.create(LootTables.BASTION_HOGLIN_STABLE_CHEST))
-                .criterion("loot_bastion_other", PlayerGeneratesContainerLootCriterion.Conditions.create(LootTables.BASTION_OTHER_CHEST))
-                .criterion("loot_bastion_treasure", PlayerGeneratesContainerLootCriterion.Conditions.create(LootTables.BASTION_TREASURE_CHEST))
-                .criterion("loot_bastion_bridge", PlayerGeneratesContainerLootCriterion.Conditions.create(LootTables.BASTION_BRIDGE_CHEST))
-                .criterion("in_void", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.createDimension(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void")))))
-                // Logic: (Stable OR Other OR Treasure OR Bridge) AND (In Void)
-                .requirements(new AdvancementRequirements(List.of(
-                        List.of("loot_bastion_hoglin_stable", "loot_bastion_other", "loot_bastion_treasure", "loot_bastion_bridge"),
-                        List.of("in_void")
+                // Using the manual constructor logic via the helper method
+                .criterion("loot_stable", lootedInVoid(LootTables.BASTION_HOGLIN_STABLE_CHEST, ModDimensions.THE_VOID))
+                .criterion("loot_other", lootedInVoid(LootTables.BASTION_OTHER_CHEST, ModDimensions.THE_VOID))
+                .criterion("loot_treasure", lootedInVoid(LootTables.BASTION_TREASURE_CHEST, ModDimensions.THE_VOID))
+                .criterion("loot_bridge", lootedInVoid(LootTables.BASTION_BRIDGE_CHEST, ModDimensions.THE_VOID))
+
+                // Uses anyOf so that opening any ONE of these in the Void grants the advancement
+                .requirements(AdvancementRequirements.anyOf(List.of(
+                        "loot_stable", "loot_other", "loot_treasure", "loot_bridge"
                 )))
                 .parent(voidStructure)
                 .build(consumer, "enderite:loot_bastion_void");
@@ -496,7 +508,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .criterion("kill_blaze", OnKilledCriterion.Conditions.createPlayerKilledEntity(
                         EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.BLAZE))
                                 .location(LocationPredicate.Builder.createStructure(structureLookup.getOrThrow(StructureKeys.FORTRESS)))
-                                .location(LocationPredicate.Builder.createDimension(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))))
+                                .location(LocationPredicate.Builder.createDimension(ModDimensions.THE_VOID))
                 ))
                 .build(consumer, "enderite:kill_blaze_void");
 
@@ -511,9 +523,17 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         true
                 ).parent(voidStructure)
-                .criterion("get_levitation", EffectsChangedCriterion.Conditions.create(EntityEffectPredicate.Builder.create().addEffect(StatusEffects.LEVITATION)))
-                .criterion("in_void", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.createDimension(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void")))))
-                .requirements(AdvancementRequirements.allOf(List.of("get_levitation", "in_void")))
+                .criterion("get_levitation", Criteria.EFFECTS_CHANGED.create(
+                        new EffectsChangedCriterion.Conditions(
+                                Optional.of(EntityPredicate.contextPredicateFromEntityPredicate(
+                                        EntityPredicate.Builder.create()
+                                                .location(LocationPredicate.Builder.createDimension(ModDimensions.THE_VOID))
+                                                .location(LocationPredicate.Builder.createStructure(structureLookup.getOrThrow(StructureKeys.END_CITY)))
+                                )),
+                                EntityEffectPredicate.Builder.create().addEffect(StatusEffects.LEVITATION).build(),
+                                Optional.empty()
+                        )
+                ))
                 .build(consumer, "enderite:get_levitation");
 
         AdvancementEntry breakSpiderSpawnerVoid = Advancement.Builder.create()
@@ -528,13 +548,16 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true
                 ).parent(voidStructure)
                 .criterion("break_spawner", Enderite.BREAK_BLOCK_WITH_ITEM.create(new BreakBlockWithItemCriterion.Conditions(
-                        Optional.empty(),
+                        Optional.of(EntityPredicate.contextPredicateFromEntityPredicate(
+                                EntityPredicate.Builder.create()
+                                        .location(LocationPredicate.Builder
+                                                .createStructure(structureLookup.getOrThrow(StructureKeys.MINESHAFT))
+                                                .dimension(ModDimensions.THE_VOID)
+                                        )
+                        )),
                         Optional.empty(),
                         Optional.of(BlockPredicate.Builder.create().blocks(blockLookup, Blocks.SPAWNER).build())
                 )))
-                .criterion("in_mineshaft", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.createStructure(structureLookup.getOrThrow(StructureKeys.MINESHAFT))))
-                .criterion("in_void", TickCriterion.Conditions.createLocation(LocationPredicate.Builder.createDimension(RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void")))))
-                .requirements(AdvancementRequirements.allOf(List.of("break_spawner", "in_mineshaft", "in_void")))
                 .build(consumer, "enderite:break_spider_spawner");
 
         // endregion
@@ -630,5 +653,17 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 )).build(consumer, "enderite:ender_dragon");
 
         // endregion
+    }
+
+    private AdvancementCriterion<PlayerGeneratesContainerLootCriterion.Conditions> lootedInVoid(RegistryKey<LootTable> lootTable, RegistryKey<World> dim) {
+        return Criteria.PLAYER_GENERATES_CONTAINER_LOOT.create(
+                new PlayerGeneratesContainerLootCriterion.Conditions(
+                        Optional.of(EntityPredicate.contextPredicateFromEntityPredicate(
+                                EntityPredicate.Builder.create()
+                                        .location(LocationPredicate.Builder.create().dimension(dim))
+                        )),
+                        lootTable
+                )
+        );
     }
 }

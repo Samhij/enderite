@@ -6,14 +6,11 @@
   "mixins": [
     "BedrockBreakerMixin",
     "BlockBreakMixin",
-    "CarvedPumpkinBlockMixin",
-    "EndermanEntityMixin",
-    "FallDamageMixin",
-    "PlayerDeathMixin",
-    "VoidTeleportMixin"
+    "PreventAggroMixin",
+    "SpawnEnderiteGolemMixin",
+    "VoidPlayerMixin"
   ],
   "client": [
-    "InGameHudMixin",
     "VoidFogMixin"
   ],
   "injectors": {

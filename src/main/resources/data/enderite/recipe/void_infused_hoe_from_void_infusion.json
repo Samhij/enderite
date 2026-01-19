@@ -1,6 +1,7 @@
 {
   "type": "enderite:void_infusion",
-  "ingredient": "enderite:enderite_hoe",
+  "base_ingredient": "enderite:enderite_hoe",
+  "void_ingredient": "enderite:void_infused_ingot",
   "result": {
     "id": "enderite:void_infused_hoe",
     "count": 1
