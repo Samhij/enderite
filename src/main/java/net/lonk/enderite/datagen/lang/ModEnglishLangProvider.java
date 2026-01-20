@@ -2,13 +2,18 @@ package net.lonk.enderite.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.lonk.enderite.Enderite;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.entity.ModEntities;
 import net.lonk.enderite.item.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class ModEnglishLangProvider extends FabricLanguageProvider {
     public ModEnglishLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
@@ -17,46 +22,30 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
-        // region Items
+        // Items
+        Registries.ITEM.getIds().stream()
+                .filter(id -> id.getNamespace().equals(Enderite.MOD_ID))
+                .map(Registries.ITEM::get)
+                .forEach(item -> addAutoName(translationBuilder, item));
 
-        translationBuilder.add(ModItems.ENDERITE_INGOT, "Enderite Ingot");
-        translationBuilder.add(ModItems.RAW_ENDERITE, "Raw Enderite");
-        translationBuilder.add(ModItems.ENDERITE_SCRAP, "Enderite Scrap");
-        translationBuilder.add(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, "Enderite Upgrade");
-        translationBuilder.add(ModItems.VOID_INFUSED_INGOT, "Void-Infused Ingot");
-        translationBuilder.add(ModItems.VOID_INFUSED_CHORUS_FRUIT, "Void-Infused Chorus Fruit");
+        // Blocks
+        translationBuilder.add(ModBlocks.ENDERITE_ORE, "Enderite Ore");
+        translationBuilder.add(ModBlocks.VOID_INFUSION_TABLE, "Void Infusion Table");
+        translationBuilder.add(ModBlocks.ENDERITE_BLOCK, "Block of Enderite");
+        translationBuilder.add(ModBlocks.VOID_INFUSED_BLOCK, "Block of Void");
 
-        // endregion
+        // Smithing Template
+        translationBuilder.add("upgrade.enderite.enderite_upgrade", "Enderite Upgrade");
+        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.applies_to", "Netherite Equipment");
+        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.ingredients", "Enderite Ingot");
+        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.base_slot_description", "Add netherite armor, weapon, or tool");
+        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.additions_slot_description", "Add Enderite Ingot");
 
-        // region Tools
+        translationBuilder.add("itemGroup.enderite", "Enderite");
+        translationBuilder.add("container.enderite.void_infusion_table", "Void Infusion Table");
 
-        translationBuilder.add(ModItems.ENDERITE_SWORD, "Enderite Sword");
-        translationBuilder.add(ModItems.ENDERITE_PICKAXE, "Enderite Pickaxe");
-        translationBuilder.add(ModItems.ENDERITE_SHOVEL, "Enderite Shovel");
-        translationBuilder.add(ModItems.ENDERITE_AXE, "Enderite Axe");
-        translationBuilder.add(ModItems.ENDERITE_HOE, "Enderite Hoe");
-
-        translationBuilder.add(ModItems.VOID_INFUSED_SWORD, "Void-Infused Sword");
-        translationBuilder.add(ModItems.VOID_INFUSED_PICKAXE, "Void-Infused Pickaxe");
-        translationBuilder.add(ModItems.VOID_INFUSED_PICKAXE.getTranslationKey() + ".tooltip", "A gateway to the Void");
-        translationBuilder.add(ModItems.VOID_INFUSED_SHOVEL, "Void-Infused Shovel");
-        translationBuilder.add(ModItems.VOID_INFUSED_AXE, "Void-Infused Axe");
-        translationBuilder.add(ModItems.VOID_INFUSED_HOE, "Void-Infused Hoe");
-
-        // endregion
-
-        // region Armor
-        translationBuilder.add(ModItems.ENDERITE_HELMET, "Enderite Helmet");
-        translationBuilder.add(ModItems.ENDERITE_CHESTPLATE, "Enderite Chestplate");
-        translationBuilder.add(ModItems.ENDERITE_LEGGINGS, "Enderite Leggings");
-        translationBuilder.add(ModItems.ENDERITE_BOOTS, "Enderite Boots");
-
-        translationBuilder.add(ModItems.VOID_INFUSED_HELMET, "Void-Infused Helmet");
-        translationBuilder.add(ModItems.VOID_INFUSED_CHESTPLATE, "Void-Infused Chestplate");
-        translationBuilder.add(ModItems.VOID_INFUSED_LEGGINGS, "Void-Infused Leggings");
-        translationBuilder.add(ModItems.VOID_INFUSED_BOOTS, "Void-Infused Boots");
-
-        // endregion
+        // Entities
+        translationBuilder.add(ModEntities.ENDERITE_GOLEM, "Enderite Golem");
 
         // region Advancements
 
@@ -169,33 +158,22 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("advancements.enderite.get_ender_eye.description", "Obtain an Eye of Ender and get one step closer to escaping");
 
         // endregion
-
-        // region Misc
-
-        // Blocks
-        addBlock(translationBuilder, ModBlocks.ENDERITE_ORE, "Enderite Ore");
-        addBlock(translationBuilder, ModBlocks.VOID_INFUSION_TABLE, "Void Infusion Table");
-        addBlock(translationBuilder, ModBlocks.ENDERITE_BLOCK, "Block of Enderite");
-        addBlock(translationBuilder, ModBlocks.VOID_INFUSED_BLOCK, "Block of Void");
-
-        // Smithing Template
-        translationBuilder.add("upgrade.enderite.enderite_upgrade", "Enderite Upgrade");
-        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.applies_to", "Netherite Equipment");
-        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.ingredients", "Enderite Ingot");
-        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.base_slot_description", "Add netherite armor, weapon, or tool");
-        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.additions_slot_description", "Add Enderite Ingot");
-
-        translationBuilder.add("itemGroup.enderite", "Enderite");
-        translationBuilder.add("container.enderite.void_infusion_table", "Void Infusion Table");
-
-        // Entities
-        translationBuilder.add(ModEntities.ENDERITE_GOLEM, "Enderite Golem");
-
-        // endregion
     }
 
-    private static void addBlock(TranslationBuilder builder, Block block, String name) {
-        builder.add(block, name);
-        builder.add(block.asItem(), name);
+    private void addAutoName(TranslationBuilder builder, Item item) {
+        // Get the path
+        String path = Registries.ITEM.getId(item).getPath();
+
+        // Split by underscores, capitalize, and join
+        String name = Arrays.stream(path.split("_"))
+                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                .collect(Collectors.joining(" "));
+
+        // Check if the generated name contains "Infused" and fix it
+        if (name.contains("Infused")) {
+            name = name.replace("Void Infused", "Void-Infused");
+        }
+
+        builder.add(item, name);
     }
 }

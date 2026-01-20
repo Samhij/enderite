@@ -28,19 +28,20 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         return new RecipeGenerator(wrapperLookup, exporter) {
             @Override
             public void generate() {
-                final List<ItemConvertible> ENDERITE_SMELTABLES = List.of(
-                        ModItems.RAW_ENDERITE,
-                        ModBlocks.ENDERITE_ORE
-                );
-
                 // Smelting & Blasting
-                offerSmelting(ENDERITE_SMELTABLES, RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 200, "enderite");
-                offerBlasting(ENDERITE_SMELTABLES, RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 100, "enderite");
+                offerSmelting(List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 200, "enderite");
+                offerBlasting(List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 100, "enderite");
+
+                offerSmelting(List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 200, "enderite");
+                offerBlasting(List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 100, "enderite");
 
                 // Items
-                createShapeless(RecipeCategory.MISC, ModItems.ENDERITE_INGOT)
-                        .input(ModItems.ENDERITE_SCRAP, 8)
-                        .input(Items.ECHO_SHARD, 1)
+                createShaped(RecipeCategory.MISC, ModItems.ENDERITE_INGOT)
+                        .pattern("AAA")
+                        .pattern("ABA")
+                        .pattern("AAA")
+                        .input('A', ModItems.ENDERITE_SCRAP)
+                        .input('B', Items.ECHO_SHARD)
                         .criterion(hasItem(ModItems.ENDERITE_SCRAP), conditionsFromItem(ModItems.ENDERITE_SCRAP))
                         .offerTo(exporter, "enderite_ingot_from_enderite_scrap");
 

@@ -1,9 +1,6 @@
 package net.lonk.enderite.item.custom;
 
 import net.lonk.enderite.item.ModItems;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -27,18 +24,18 @@ public class VoidInfusedArmorItem extends ArmorItem {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        applyBindingCurse(stack, world);
+        applyVanishingCurse(stack, world);
         applyLuckEffectForHelmet(entity);
         applyWeavingEffectForBoots(entity);
     }
 
-    private void applyBindingCurse(ItemStack stack, World world) {
-        RegistryEntry<Enchantment> bindingCurse = world.getRegistryManager()
+    private void applyVanishingCurse(ItemStack stack, World world) {
+        RegistryEntry<Enchantment> vanishingCurse = world.getRegistryManager()
                 .getOrThrow(RegistryKeys.ENCHANTMENT)
-                .getOrThrow(Enchantments.BINDING_CURSE);
+                .getOrThrow(Enchantments.VANISHING_CURSE);
 
-        if (EnchantmentHelper.getLevel(bindingCurse, stack) == 0) {
-            stack.addEnchantment(bindingCurse, 1);
+        if (EnchantmentHelper.getLevel(vanishingCurse, stack) == 0) {
+            stack.addEnchantment(vanishingCurse, 1);
         }
     }
 
