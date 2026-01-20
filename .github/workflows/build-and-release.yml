@@ -87,4 +87,26 @@ jobs:
 
             ## Changes
             ${{ github.event.head_commit.message }}
-          files: build/libs/*.jar
+          files: |
+            build/libs/*[!-sources].jar
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ${{ secrets.MODRINTH_PROJECT_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          files: |
+            build/libs/*[!-sources].jar
+
+          name: Enderite ${{ steps.version.outputs.mod_version }}
+          version: ${{ steps.version.outputs.mod_version }}
+          version-type: beta
+
+          loaders: fabric
+          game-versions: ${{ steps.version.outputs.minecraft_version }}
+
+          dependencies: |
+            fabric-api | depends | *
+
+          changelog-file: CHANGELOG.md
