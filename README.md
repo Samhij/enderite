@@ -72,7 +72,6 @@ A mysterious custom dimension accessible through special means:
 - Unique challenges and structures
 - Custom fog effects
 - Special mobs and loot
-- Contains resources needed for Void Infusion
 
 ### Entities
 
@@ -131,7 +130,6 @@ The mod includes a comprehensive advancement tree with unique achievements:
 
 **Mod Information:**
 - Mod ID: `enderite`
-- Version: 3.1.0-beta
 - License: GPL-3.0
 - Minecraft Version: 1.21.4
 - Loader: Fabric 0.16.14
@@ -179,7 +177,3 @@ This mod uses Fabric's data generation system for:
 ## License
 
 This project is licensed under GPL-3.0.
-
-## Credits
-
-Developed by Lonk
