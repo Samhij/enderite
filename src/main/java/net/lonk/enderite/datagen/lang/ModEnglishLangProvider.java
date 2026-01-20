@@ -28,6 +28,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 .map(Registries.ITEM::get)
                 .forEach(item -> addAutoName(translationBuilder, item));
 
+        translationBuilder.add("item.enderite.void_infused_pickaxe.tooltip", "A gateway to the Void");
+
         // Blocks
         translationBuilder.add(ModBlocks.ENDERITE_ORE, "Enderite Ore");
         translationBuilder.add(ModBlocks.VOID_INFUSION_TABLE, "Void Infusion Table");
@@ -161,16 +163,20 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     }
 
     private void addAutoName(TranslationBuilder builder, Item item) {
-        // Get the path
         String path = Registries.ITEM.getId(item).getPath();
+
+        // Remove the specific suffix for smithing templates
+        if (path.endsWith("_smithing_template")) {
+            path = path.replace("_smithing_template", "");
+        }
 
         // Split by underscores, capitalize, and join
         String name = Arrays.stream(path.split("_"))
                 .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
                 .collect(Collectors.joining(" "));
 
-        // Check if the generated name contains "Infused" and fix it
-        if (name.contains("Infused")) {
+        // Handle specific hyphenation cases
+        if (name.contains("Void Infused")) {
             name = name.replace("Void Infused", "Void-Infused");
         }
 
