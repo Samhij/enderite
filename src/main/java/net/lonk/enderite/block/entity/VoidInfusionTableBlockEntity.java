@@ -25,7 +25,10 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -88,30 +91,29 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.writeNbt(nbt, registryLookup);
-        Inventories.writeNbt(nbt, inventory, registryLookup);
-        nbt.putInt("Progress", progress);
-        nbt.putInt("FuelRemaining", fuelRemaining);
-        nbt.putInt("FuelTime", fuelTime);
+    public void onBlockReplaced(BlockPos pos, BlockState oldState) {
+        ItemScatterer.spawn(world, pos, (this));
+        super.onBlockReplaced(pos, oldState);
     }
 
     @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.readNbt(nbt, registryLookup);
-        Inventories.readNbt(nbt, inventory, registryLookup);
-        progress = nbt.getInt("Progress");
-        fuelRemaining = nbt.getInt("FuelRemaining");
-        fuelTime = nbt.getInt("FuelTime");
+    protected void writeData(WriteView view) {
+        super.writeData(view);
+        Inventories.writeData(view, inventory);
+        view.putInt("Progress", progress);
+        view.putInt("FuelRemaining", fuelRemaining);
+        view.putInt("FuelTime", fuelTime);
     }
 
-    /**
-     * Gets the cached recipe for the current input stacks, or performs a lookup if the cache is invalid.
-     * This method significantly improves performance by avoiding repeated recipe manager queries.
-     *
-     * Note: Stack count is not considered for cache validation because VoidInfusionRecipe matching
-     * only depends on item type and components, not quantity.
-     */
+    @Override
+    protected void readData(ReadView view) {
+        super.readData(view);
+        Inventories.readData(view, inventory);
+        progress = view.getInt("Progress", 0);
+        fuelRemaining = view.getInt("FuelRemaining", 0);
+        fuelTime = view.getInt("FuelTime", 0);
+    }
+
     private RecipeEntry<VoidInfusionRecipe> getCachedRecipe() {
         if (world == null || !(world instanceof ServerWorld)) {
             return null;

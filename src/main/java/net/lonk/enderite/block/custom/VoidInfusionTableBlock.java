@@ -50,18 +50,6 @@ public class VoidInfusionTableBlock extends BlockWithEntity {
         return ActionResult.SUCCESS;
     }
 
-    @Override
-    protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.isOf(newState.getBlock())) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof VoidInfusionTableBlockEntity) {
-                ItemScatterer.spawn(world, pos, (VoidInfusionTableBlockEntity) blockEntity);
-                world.updateComparators(pos, this);
-            }
-            super.onStateReplaced(state, world, pos, newState, moved);
-        }
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {

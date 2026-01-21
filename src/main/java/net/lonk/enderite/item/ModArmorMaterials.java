@@ -19,7 +19,7 @@ public class ModArmorMaterials {
     public static final RegistryKey<EquipmentAsset> ENDERITE_KEY = RegistryKey.of(REGISTRY_KEY, Identifier.of(Enderite.MOD_ID, "enderite"));
     public static final RegistryKey<EquipmentAsset> VOID_INFUSED_KEY = RegistryKey.of(REGISTRY_KEY, Identifier.of(Enderite.MOD_ID, "void_infused"));
 
-    public static final ArmorMaterial ENDERITE_ARMOR_MATERIAL = new ArmorMaterial(
+    public static final ArmorMaterial ENDERITE = new ArmorMaterial(
             33,
             Util.make(new EnumMap<>(EquipmentType.class), map -> {
                 map.put(EquipmentType.BOOTS, 4);
@@ -36,7 +36,7 @@ public class ModArmorMaterials {
             ENDERITE_KEY
     );
 
-    public static final ArmorMaterial VOID_INFUSED_ARMOR_MATERIAL = new ArmorMaterial(
+    public static final ArmorMaterial VOID_INFUSED = new ArmorMaterial(
             40,
             Util.make(new EnumMap<>(EquipmentType.class), map -> {
                 map.put(EquipmentType.BOOTS, 5);

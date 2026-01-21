@@ -10,6 +10,7 @@ import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.block.pattern.BlockPatternBuilder;
 import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.block.BlockStatePredicate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -67,8 +68,8 @@ public abstract class SpawnEnderiteGolemMixin {
                 world.spawnEntity(golem);
 
                 for (int i = 0; i < 120; i++) {
-                    world.addParticle(
-                            net.minecraft.particle.ParticleTypes.SNOWFLAKE,
+                    world.addParticleClient(
+                            ParticleTypes.SNOWFLAKE,
                             (double) spawnPos.getX() + world.random.nextDouble(),
                             (double) spawnPos.getY() + world.random.nextDouble() * 2.5,
                             (double) spawnPos.getZ() + world.random.nextDouble(),

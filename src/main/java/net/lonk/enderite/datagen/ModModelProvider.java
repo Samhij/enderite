@@ -36,10 +36,10 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.ENDERITE_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ENDERITE_HOE, Models.HANDHELD);
 
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_HELMET, ModArmorMaterials.ENDERITE_KEY, "helmet", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_CHESTPLATE, ModArmorMaterials.ENDERITE_KEY, "chestplate", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_LEGGINGS, ModArmorMaterials.ENDERITE_KEY, "leggings", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_BOOTS, ModArmorMaterials.ENDERITE_KEY, "boots", false);
+        itemModelGenerator.registerArmor(ModItems.ENDERITE_HELMET, ModArmorMaterials.ENDERITE_KEY, ItemModelGenerator.HELMET_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.ENDERITE_CHESTPLATE, ModArmorMaterials.ENDERITE_KEY, ItemModelGenerator.CHESTPLATE_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.ENDERITE_LEGGINGS, ModArmorMaterials.ENDERITE_KEY, ItemModelGenerator.LEGGINGS_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.ENDERITE_BOOTS, ModArmorMaterials.ENDERITE_KEY, ItemModelGenerator.BOOTS_TRIM_ID_PREFIX, false);
 
 
         itemModelGenerator.register(ModItems.VOID_INFUSED_SWORD, Models.HANDHELD);
@@ -48,9 +48,9 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.VOID_INFUSED_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.VOID_INFUSED_HOE, Models.HANDHELD);
 
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_HELMET, ModArmorMaterials.VOID_INFUSED_KEY, "helmet", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_CHESTPLATE, ModArmorMaterials.VOID_INFUSED_KEY, "chestplate", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_LEGGINGS, ModArmorMaterials.VOID_INFUSED_KEY, "leggings", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_BOOTS, ModArmorMaterials.VOID_INFUSED_KEY, "boots", false);
+        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_HELMET, ModArmorMaterials.VOID_INFUSED_KEY, ItemModelGenerator.HELMET_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_CHESTPLATE, ModArmorMaterials.VOID_INFUSED_KEY, ItemModelGenerator.CHESTPLATE_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_LEGGINGS, ModArmorMaterials.VOID_INFUSED_KEY, ItemModelGenerator.LEGGINGS_TRIM_ID_PREFIX, false);
+        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_BOOTS, ModArmorMaterials.VOID_INFUSED_KEY, ItemModelGenerator.BOOTS_TRIM_ID_PREFIX, false);
     }
 }
