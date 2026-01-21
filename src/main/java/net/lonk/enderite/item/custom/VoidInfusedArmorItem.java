@@ -5,28 +5,29 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.equipment.ArmorMaterial;
-import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class VoidInfusedArmorItem extends ArmorItem {
-    public VoidInfusedArmorItem(ArmorMaterial material, EquipmentType type, Settings settings) {
-        super(material, type, settings);
+public class VoidInfusedArmorItem extends Item {
+    public VoidInfusedArmorItem(Settings settings) {
+        super(settings);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         applyVanishingCurse(stack, world);
         applyLuckEffectForHelmet(entity);
         applyWeavingEffectForBoots(entity);
+        super.inventoryTick(stack, world, entity, slot);
     }
 
     private void applyVanishingCurse(ItemStack stack, World world) {
@@ -41,7 +42,7 @@ public class VoidInfusedArmorItem extends ArmorItem {
 
     private void applyLuckEffectForHelmet(Entity entity) {
         if (entity instanceof ServerPlayerEntity player) {
-            if (hasEquipped(player, ModItems.VOID_INFUSED_HELMET)) {
+            if (player.getEquippedStack(EquipmentSlot.HEAD).isOf(ModItems.VOID_INFUSED_HELMET)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK));
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS));
             }
@@ -50,14 +51,9 @@ public class VoidInfusedArmorItem extends ArmorItem {
 
     private void applyWeavingEffectForBoots(Entity entity) {
         if (entity instanceof ServerPlayerEntity player) {
-            if (hasEquipped(player, ModItems.VOID_INFUSED_BOOTS)) {
+            if (player.getEquippedStack(EquipmentSlot.FEET).isOf(ModItems.VOID_INFUSED_BOOTS)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAVING));
             }
         }
-    }
-
-    private boolean hasEquipped(ServerPlayerEntity player, Item item) {
-        var armor = player.getInventory().armor;
-        return armor.get(0).getItem() == item || armor.get(1).getItem() == item || armor.get(2).getItem() == item || armor.get(3).getItem() == item;
     }
 }

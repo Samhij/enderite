@@ -62,7 +62,7 @@ public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
 
     public void scrambleInventory(PlayerEntity player) {
         // 1. Get the main inventory list (36 slots: 9 hotbar + 27 main)
-        var inventory = player.getInventory().main;
+        var inventory = player.getInventory().getMainStacks();
 
         // 2. Copy current items to a temporary list
         List<ItemStack> items = new ArrayList<>(inventory);

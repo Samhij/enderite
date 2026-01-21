@@ -26,6 +26,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -88,6 +89,12 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     }
 
     @Override
+    public void onBlockReplaced(BlockPos pos, BlockState oldState) {
+        ItemScatterer.spawn(world, pos, (this));
+        super.onBlockReplaced(pos, oldState);
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, inventory, registryLookup);
@@ -100,9 +107,9 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         Inventories.readNbt(nbt, inventory, registryLookup);
-        progress = nbt.getInt("Progress");
-        fuelRemaining = nbt.getInt("FuelRemaining");
-        fuelTime = nbt.getInt("FuelTime");
+        progress = nbt.getInt("Progress").get();
+        fuelRemaining = nbt.getInt("FuelRemaining").get();
+        fuelTime = nbt.getInt("FuelTime").get();
     }
 
     /**
