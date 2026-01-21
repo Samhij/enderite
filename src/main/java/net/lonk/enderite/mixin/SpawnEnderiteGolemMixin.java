@@ -45,7 +45,7 @@ public abstract class SpawnEnderiteGolemMixin {
 
     @Inject(method = "onBlockAdded", at = @At("TAIL"))
     private void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify, CallbackInfo ci) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             trySpawnEnderiteGolem(world, pos);
         }
     }

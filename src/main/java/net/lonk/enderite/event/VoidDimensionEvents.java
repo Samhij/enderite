@@ -33,7 +33,7 @@ public class VoidDimensionEvents {
     }
 
     public static ActionResult explodeBed(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             BlockState state = world.getBlockState(hitResult.getBlockPos());
 
             if (state.getBlock() instanceof BedBlock) {
@@ -94,10 +94,10 @@ public class VoidDimensionEvents {
 
     public static void onPlayerDeath(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof ServerPlayerEntity player) {
-            Enderite.LOGGER.info("Player {} died in dimension {}", player.getName().getString(), player.getWorld().getRegistryKey().getValue());
-            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID) {
+            Enderite.LOGGER.info("Player {} died in dimension {}", player.getName().getString(), player.getEntityWorld().getRegistryKey().getValue());
+            if (player.getEntityWorld().getRegistryKey() == ModDimensions.THE_VOID) {
                 Enderite.LOGGER.info("Player {} died in The Void dimension - granting advancement", player.getName().getString());
-                var advancement = player.getServer().getAdvancementLoader().get(Identifier.of(Enderite.MOD_ID, "die_in_void"));
+                var advancement = player.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(Enderite.MOD_ID, "die_in_void"));
                 if (advancement != null) {
                     Enderite.LOGGER.info("Granting advancement die_in_void criterion player_died to player {}", player.getName().getString());
                     player.getAdvancementTracker().grantCriterion(advancement, "player_died");
