@@ -11,6 +11,7 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.MathHelper;
 
 public class VoidInfusionTableScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -83,7 +84,7 @@ public class VoidInfusionTableScreenHandler extends ScreenHandler {
     public float getInfusionProgress() {
         int progress = this.getProgress();
         int maxProgress = this.getMaxProgress();
-        return maxProgress != 0 && progress != 0 ? net.minecraft.util.math.MathHelper.clamp((float)progress / (float)maxProgress, 0.0F, 1.0F) : 0.0F;
+        return maxProgress != 0 && progress != 0 ? MathHelper.clamp((float)progress / (float)maxProgress, 0.0F, 1.0F) : 0.0F;
     }
 
     public float getFuelProgress() {
@@ -100,7 +101,7 @@ public class VoidInfusionTableScreenHandler extends ScreenHandler {
             return 0.0F;
         }
 
-        return net.minecraft.util.math.MathHelper.clamp((float)fuelRemaining / (float)maxFuel, 0.0F, 1.0F);
+        return MathHelper.clamp((float)fuelRemaining / (float)maxFuel, 0.0F, 1.0F);
     }
 
     @Override
