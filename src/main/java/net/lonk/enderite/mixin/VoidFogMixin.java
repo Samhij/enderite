@@ -21,7 +21,7 @@ public abstract class VoidFogMixin {
     @Inject(method = "applyStartEndModifier", at = @At("HEAD"), cancellable = true)
     private void forceVoidFog(FogData fogData, Entity entity, BlockPos pos, ClientWorld world, float viewDistance, RenderTickCounter tickCounter, CallbackInfo ci) {
         if (entity instanceof ClientPlayerEntity player) {
-            if (player.getWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
+            if (player.getEntityWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
                 // Apply thick void fog effect
                 fogData.environmentalStart = 0.0f;
                 fogData.environmentalEnd = 128.0f;

@@ -2,6 +2,7 @@ package net.lonk.enderite.entity.client;
 
 import net.lonk.enderite.Enderite;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.IronGolemEntityModel;
@@ -19,11 +20,11 @@ public class EnderiteGolemCrackFeatureRenderer extends FeatureRenderer<IronGolem
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, IronGolemEntityRenderState state, float limbAngle, float limbDistance) {
+    public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light, IronGolemEntityRenderState state, float limbAngle, float limbDistance) {
         if (!state.invisible) {
             Identifier crackTexture = getCrackTexture(state);
             if (crackTexture != null) {
-                renderModel(this.getContextModel(), crackTexture, matrices, vertexConsumers, light, state, -1);
+                renderModel(this.getContextModel(), crackTexture, matrices, queue, light, state, -1, 1);
             }
         }
     }

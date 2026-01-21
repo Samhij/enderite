@@ -31,9 +31,9 @@ public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
 
     @Override
     public boolean onConsume(World world, ItemStack stack, LivingEntity user) {
-        if (user instanceof PlayerEntity player && !world.isClient) { // Ensure server-side logic
-            if (player.getWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
-                ServerWorld overworld = player.getServer().getOverworld();
+        if (user instanceof PlayerEntity player && !world.isClient()) { // Ensure server-side logic
+            if (player.getEntityWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
+                ServerWorld overworld = player.getEntityWorld().getServer().getOverworld();
 
                 // 1. Teleport first
                 player.teleport(overworld, player.getX(), 250, player.getY(), Set.of(), player.getYaw(), player.getPitch(), false);
@@ -81,7 +81,7 @@ public record TeleportFromVoidConsumeEffect() implements ConsumeEffect {
 
     private void putInRandomSlot(PlayerEntity player, ItemStack stack) {
         PlayerInventory inventory = player.getInventory();
-        var random = player.getWorld().getRandom();
+        var random = player.getEntityWorld().getRandom();
 
         // Try up to 10 times to find a random empty slot
         for (int i = 0; i < 10; i++) {

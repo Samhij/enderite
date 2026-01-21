@@ -160,7 +160,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if (world.isClient) {
+        if (world.isClient()) {
             return;
         }
 
@@ -265,13 +265,13 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
                 );
             }
 
-            // Add some dragon breath particles
+            // Add some end rod particles (similar visual to dragon breath)
             if (world.random.nextInt(3) == 0) {
                 double offsetX = (world.random.nextDouble() - 0.5) * 0.3;
                 double offsetZ = (world.random.nextDouble() - 0.5) * 0.3;
 
                 serverWorld.spawnParticles(
-                        ParticleTypes.DRAGON_BREATH,
+                        ParticleTypes.END_ROD,
                         x + offsetX, y + 0.2, z + offsetZ,
                         1,
                         0.0, 0.05, 0.0,
@@ -426,7 +426,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        return pos.isWithinDistance(player.getPos(), 8.0);
+        return pos.isWithinDistance(player.getEntityPos(), 8.0);
     }
 
     @Override
