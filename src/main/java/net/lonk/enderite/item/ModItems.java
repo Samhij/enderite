@@ -116,7 +116,7 @@ public class ModItems {
         return new SmithingTemplateItem(
                 getEnderiteUpgradeAppliesTo(),
                 getEnderiteUpgradeIngredients(),
-                Text.translatable(Util.createTranslationKey("item", Identifier.of(""))).formatted(Formatting.GRAY),
+                Text.translatable(Util.createTranslationKey("item", Identifier.of(Enderite.MOD_ID, "smithing_template.enderite_upgrade.title"))).formatted(Formatting.GRAY),
                 getEnderiteUpgradeBaseSlotDescription(),
                 getEnderiteUpgradeAdditionsSlotDescription(),
                 getEnderiteUpgradeEmptyBaseSlotTextures(),
