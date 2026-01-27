@@ -21,7 +21,7 @@ public class BreakBlockWithItemCriterion extends AbstractCriterion<BreakBlockWit
     }
 
     public void trigger(ServerPlayerEntity player, BlockPos pos, ItemStack stack) {
-        ServerWorld world = player.getServerWorld();
+        ServerWorld world = player.getEntityWorld();
         this.trigger(player, conditions -> conditions.matches(world, pos, stack));
     }
 

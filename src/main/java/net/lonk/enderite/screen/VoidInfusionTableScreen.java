@@ -1,6 +1,7 @@
 package net.lonk.enderite.screen;
 
 import net.lonk.enderite.Enderite;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,6 +22,9 @@ public class VoidInfusionTableScreen extends HandledScreen<VoidInfusionTableScre
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleY = 6;
+        playerInventoryTitleX = 8;
+        playerInventoryTitleY = backgroundHeight - 94;
     }
 
     @Override

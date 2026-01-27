@@ -3,7 +3,6 @@ package net.lonk.enderite.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.lonk.enderite.block.ModBlocks;
-import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 
@@ -16,19 +15,19 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS)
+        valueLookupBuilder(BlockTags.BEACON_BASE_BLOCKS)
                 .add(ModBlocks.ENDERITE_BLOCK)
                 .add(ModBlocks.VOID_INFUSED_BLOCK)
         ;
 
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
+        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(ModBlocks.ENDERITE_ORE)
                 .add(ModBlocks.ENDERITE_BLOCK)
                 .add(ModBlocks.VOID_INFUSED_BLOCK)
                 .add(ModBlocks.VOID_INFUSION_TABLE)
         ;
 
-        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
+        valueLookupBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.ENDERITE_ORE)
                 .add(ModBlocks.ENDERITE_BLOCK)
                 .add(ModBlocks.VOID_INFUSED_BLOCK)

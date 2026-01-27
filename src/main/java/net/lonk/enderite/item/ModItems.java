@@ -13,6 +13,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class ModItems {
     // region Items
@@ -74,24 +75,18 @@ public class ModItems {
 
     // region Armor
 
-    // buff: don't aggro endermen when looking at them (EndermanEntityMixin)
     public static final Item ENDERITE_HELMET = registerItem("enderite_helmet",
             new ArmorItem(ModArmorMaterials.ENDERITE, ArmorItem.Type.HELMET, new Item.Settings().fireproof()));
 
-    // buff: integrated elytra
     public static final Item ENDERITE_CHESTPLATE = registerItem("enderite_chestplate",
             new ArmorItem(ModArmorMaterials.ENDERITE, ArmorItem.Type.CHESTPLATE, new Item.Settings().fireproof()));
 
-    // buff: 8% projectile negation chance (ModEvents)
     public static final Item ENDERITE_LEGGINGS = registerItem("enderite_leggings",
             new ArmorItem(ModArmorMaterials.ENDERITE, ArmorItem.Type.LEGGINGS, new Item.Settings().fireproof()));
 
-    // buff: +1 safe fall damage
     public static final Item ENDERITE_BOOTS = registerItem("enderite_boots",
             new ArmorItem(ModArmorMaterials.ENDERITE, ArmorItem.Type.BOOTS, new Item.Settings().fireproof()));
 
-    // buff: grants luck effect when wearing (VoidInfusedArmorItem)
-    // downside:
     public static final Item VOID_INFUSED_HELMET = registerItem("void_infused_helmet",
             new VoidInfusedArmorItem(ModArmorMaterials.VOID_INFUSED, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.RARE).fireproof()));
 

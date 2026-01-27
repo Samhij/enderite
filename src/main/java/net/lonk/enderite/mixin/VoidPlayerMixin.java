@@ -33,11 +33,11 @@ public abstract class VoidPlayerMixin {
     }
 
     @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
-    private void cancelVoidFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+    private void cancelVoidFallDamage(double fallDistance, float damagePerDistance, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
 
         if (entity instanceof ServerPlayerEntity player) {
-            if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID) {
+            if (player.getEntityWorld().getRegistryKey() == ModDimensions.THE_VOID) {
                 cir.setReturnValue(false);
             }
         }
@@ -46,12 +46,12 @@ public abstract class VoidPlayerMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void handleVoidTick(CallbackInfo ci) {
         if ((Object) this instanceof ServerPlayerEntity player) {
-            if (player.getY() < -100 && player.getWorld().getRegistryKey() != World.END) {
-                if (player.getWorld().getRegistryKey() == ModDimensions.THE_VOID) {
+            if (player.getY() < -100 && player.getEntityWorld().getRegistryKey() != World.END) {
+                if (player.getEntityWorld().getRegistryKey() == ModDimensions.THE_VOID) {
                     grantAdvancement(player, "nice_try", "player_jumped_in_void");
                 }
 
-                ServerWorld voidWorld = player.getServer().getWorld(ModDimensions.THE_VOID);
+                ServerWorld voidWorld = player.getEntityWorld().getServer().getWorld(ModDimensions.THE_VOID);
                 if (voidWorld != null) {
                     player.teleport(voidWorld, player.getX(), 500, player.getZ(), player.getYaw(), player.getPitch());
                 }
@@ -61,7 +61,7 @@ public abstract class VoidPlayerMixin {
 
     @Unique
     private void grantAdvancement(ServerPlayerEntity player, String name, String criterion) {
-        var advancement = player.getServer().getAdvancementLoader().get(Identifier.of(Enderite.MOD_ID, name));
+        var advancement = player.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(Enderite.MOD_ID, name));
         if (advancement != null) {
             player.getAdvancementTracker().grantCriterion(advancement, criterion);
         }
