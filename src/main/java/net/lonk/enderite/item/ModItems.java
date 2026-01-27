@@ -2,6 +2,7 @@ package net.lonk.enderite.item;
 
 import net.lonk.enderite.Enderite;
 import net.lonk.enderite.item.custom.VoidInfusedArmorItem;
+import net.lonk.enderite.item.custom.VoidInfusedPickaxeItem;
 import net.minecraft.component.type.FoodComponents;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -57,19 +58,19 @@ public class ModItems {
 
 
     public static final Item VOID_INFUSED_SWORD = registerItem("void_infused_sword",
-            new SwordItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().fireproof().attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 3, -2.4f))));
+            new SwordItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().rarity(Rarity.RARE).fireproof().attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 3, -2.4f))));
 
     public static final Item VOID_INFUSED_PICKAXE = registerItem("void_infused_pickaxe",
-            new PickaxeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().fireproof().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 1.0f, -2.8f))));
+            new VoidInfusedPickaxeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().rarity(Rarity.RARE).fireproof().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 1.0f, -2.8f))));
 
     public static final Item VOID_INFUSED_SHOVEL = registerItem("void_infused_shovel",
-            new ShovelItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().fireproof().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 1.5f, -3.0f))));
+            new ShovelItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().rarity(Rarity.RARE).fireproof().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 1.5f, -3.0f))));
 
     public static final Item VOID_INFUSED_AXE = registerItem("void_infused_axe",
-            new AxeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 6.0f, -3.2f))));
+            new AxeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().rarity(Rarity.RARE).fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 6.0f, -3.2f))));
 
     public static final Item VOID_INFUSED_HOE = registerItem("void_infused_hoe",
-            new HoeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 0.0f, -3.0f))));
+            new HoeItem(ModToolMaterials.VOID_INFUSED, new Item.Settings().rarity(Rarity.RARE).fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.VOID_INFUSED, 0.0f, -3.0f))));
 
     // endregion
 

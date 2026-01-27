@@ -12,6 +12,7 @@ import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.block.BlockStatePredicate;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -67,14 +68,18 @@ public abstract class SpawnEnderiteGolemMixin {
                 golem.setBodyYaw(getHorizontalFacing(result).getRotationQuaternion().y);
                 world.spawnEntity(golem);
 
-                for (int i = 0; i < 120; i++) {
-                    world.addParticleClient(
-                            ParticleTypes.SNOWFLAKE,
-                            (double) spawnPos.getX() + world.random.nextDouble(),
-                            (double) spawnPos.getY() + world.random.nextDouble() * 2.5,
-                            (double) spawnPos.getZ() + world.random.nextDouble(),
-                            0.0, 0.0, 0.0
-                    );
+                if (world instanceof ServerWorld serverWorld) {
+                    for (int i = 0; i < 120; i++) {
+                        serverWorld.spawnParticles(
+                                ParticleTypes.SNOWFLAKE,
+                                (double) spawnPos.getX() + world.random.nextDouble(),
+                                (double) spawnPos.getY() + world.random.nextDouble() * 2.5,
+                                (double) spawnPos.getZ() + world.random.nextDouble(),
+                                1,
+                                0.0, 0.0, 0.0,
+                                0.0
+                        );
+                    }
                 }
 
                 for (int x = -2; x <= 2; x++) {

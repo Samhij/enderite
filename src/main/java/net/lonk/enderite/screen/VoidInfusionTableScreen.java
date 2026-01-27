@@ -1,7 +1,6 @@
 package net.lonk.enderite.screen;
 
 import net.lonk.enderite.Enderite;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;

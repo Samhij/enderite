@@ -1,5 +1,6 @@
 package net.lonk.enderite.mixin;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.lonk.enderite.Enderite;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.BackgroundRenderer;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(DimensionOrBossFogModifier.class)
+@Mixin(BackgroundRenderer.class)
 public abstract class VoidFogMixin {
     @Inject(method = "applyFog", at = @At("HEAD"), cancellable = true)
     private static void forceVoidFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci) {

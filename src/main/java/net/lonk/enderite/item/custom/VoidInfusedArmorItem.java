@@ -10,14 +10,11 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class VoidInfusedArmorItem extends ArmorItem {
     public VoidInfusedArmorItem(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
@@ -25,11 +22,13 @@ public class VoidInfusedArmorItem extends ArmorItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        applyVanishingCurse(stack, world);
-        applyLuckEffectForHelmet(entity);
-        applyWeavingEffectForBoots(entity);
-        super.inventoryTick(stack, world, entity, slot);
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if (!world.isClient()) {
+            applyVanishingCurse(stack, world);
+            applyLuckEffectForHelmet(entity);
+            applyWeavingEffectForBoots(entity);
+        }
+        super.inventoryTick(stack, world, entity, slot, selected);
     }
 
     private void applyVanishingCurse(ItemStack stack, World world) {

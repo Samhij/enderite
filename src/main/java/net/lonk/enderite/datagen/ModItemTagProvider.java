@@ -16,72 +16,60 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        valueLookupBuilder(ModTags.Items.ENDERITE_REPAIR).add(ModItems.ENDERITE_INGOT);
-        valueLookupBuilder(ModTags.Items.VOID_INFUSED_REPAIR).add(ModItems.VOID_INFUSED_INGOT);
+        getOrCreateTagBuilder(ModTags.Items.ENDERITE_REPAIR).add(ModItems.ENDERITE_INGOT);
+        getOrCreateTagBuilder(ModTags.Items.VOID_INFUSED_REPAIR).add(ModItems.VOID_INFUSED_INGOT);
 
-        valueLookupBuilder(ItemTags.BEACON_PAYMENT_ITEMS)
+        getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS)
                 .add(ModItems.ENDERITE_INGOT)
                 .add(ModItems.VOID_INFUSED_INGOT)
         ;
 
-        valueLookupBuilder(ItemTags.SWORDS)
+        getOrCreateTagBuilder(ItemTags.SWORDS)
                 .add(ModItems.ENDERITE_SWORD)
                 .add(ModItems.VOID_INFUSED_SWORD)
         ;
 
-        valueLookupBuilder(ItemTags.PICKAXES)
+        getOrCreateTagBuilder(ItemTags.PICKAXES)
                 .add(ModItems.ENDERITE_PICKAXE)
                 .add(ModItems.VOID_INFUSED_PICKAXE)
         ;
 
-        valueLookupBuilder(ItemTags.SHOVELS)
+        getOrCreateTagBuilder(ItemTags.SHOVELS)
                 .add(ModItems.ENDERITE_SHOVEL)
                 .add(ModItems.VOID_INFUSED_SHOVEL)
         ;
 
-        valueLookupBuilder(ItemTags.AXES)
+        getOrCreateTagBuilder(ItemTags.AXES)
                 .add(ModItems.ENDERITE_AXE)
                 .add(ModItems.VOID_INFUSED_AXE)
         ;
 
-        valueLookupBuilder(ItemTags.HOES)
+        getOrCreateTagBuilder(ItemTags.HOES)
                 .add(ModItems.ENDERITE_HOE)
                 .add(ModItems.VOID_INFUSED_HOE)
         ;
 
-        valueLookupBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
+        getOrCreateTagBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
                 .add(ModItems.ENDERITE_HELMET)
                 .add(ModItems.VOID_INFUSED_HELMET)
         ;
 
-        valueLookupBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
+        getOrCreateTagBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
                 .add(ModItems.ENDERITE_CHESTPLATE)
                 .add(ModItems.VOID_INFUSED_CHESTPLATE)
         ;
 
-        valueLookupBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
+        getOrCreateTagBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
                 .add(ModItems.ENDERITE_LEGGINGS)
                 .add(ModItems.VOID_INFUSED_LEGGINGS)
         ;
 
-        valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
+        getOrCreateTagBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
                 .add(ModItems.ENDERITE_BOOTS)
                 .add(ModItems.VOID_INFUSED_BOOTS)
         ;
 
-        valueLookupBuilder(ItemTags.ARMOR_ENCHANTABLE)
-                .add(ModItems.ENDERITE_HELMET)
-                .add(ModItems.ENDERITE_CHESTPLATE)
-                .add(ModItems.ENDERITE_LEGGINGS)
-                .add(ModItems.ENDERITE_BOOTS)
-
-                .add(ModItems.VOID_INFUSED_HELMET)
-                .add(ModItems.VOID_INFUSED_CHESTPLATE)
-                .add(ModItems.VOID_INFUSED_LEGGINGS)
-                .add(ModItems.VOID_INFUSED_BOOTS)
-        ;
-
-        valueLookupBuilder(ItemTags.TRIMMABLE_ARMOR)
+        getOrCreateTagBuilder(ItemTags.ARMOR_ENCHANTABLE)
                 .add(ModItems.ENDERITE_HELMET)
                 .add(ModItems.ENDERITE_CHESTPLATE)
                 .add(ModItems.ENDERITE_LEGGINGS)
@@ -93,7 +81,19 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ModItems.VOID_INFUSED_BOOTS)
         ;
 
-        valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+        getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
+                .add(ModItems.ENDERITE_HELMET)
+                .add(ModItems.ENDERITE_CHESTPLATE)
+                .add(ModItems.ENDERITE_LEGGINGS)
+                .add(ModItems.ENDERITE_BOOTS)
+
+                .add(ModItems.VOID_INFUSED_HELMET)
+                .add(ModItems.VOID_INFUSED_CHESTPLATE)
+                .add(ModItems.VOID_INFUSED_LEGGINGS)
+                .add(ModItems.VOID_INFUSED_BOOTS)
+        ;
+
+        getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
                 .add(ModItems.ENDERITE_HELMET)
                 .add(ModItems.ENDERITE_CHESTPLATE)
                 .add(ModItems.ENDERITE_LEGGINGS)
