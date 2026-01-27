@@ -5,29 +5,26 @@ import net.lonk.enderite.Enderite;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Fog;
-import net.minecraft.client.render.FogShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BackgroundRenderer.class)
 public abstract class VoidFogMixin {
     @Inject(method = "applyFog", at = @At("HEAD"), cancellable = true)
-    private static void forceVoidFog(Camera camera, BackgroundRenderer.FogType fogType, Vector4f color, float viewDistance, boolean thickenFog, float tickDelta, CallbackInfoReturnable<Fog> cir) {
+    private static void forceVoidFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci) {
         Entity entity = camera.getFocusedEntity();
 
         if (entity instanceof ClientPlayerEntity player) {
             if (player.getWorld().getRegistryKey() == RegistryKey.of(RegistryKeys.WORLD, Identifier.of(Enderite.MOD_ID, "the_void"))) {
-                Fog thickVoidFog = new Fog(0.0f, 128.0f, FogShape.SPHERE, color.x, color.y, color.z, color.w);
-                RenderSystem.setShaderFog(thickVoidFog);
-                cir.setReturnValue(thickVoidFog);
+                RenderSystem.setShaderFogStart(0.0f);
+                RenderSystem.setShaderFogEnd(128.0f);
+                ci.cancel();
             }
         }
     }

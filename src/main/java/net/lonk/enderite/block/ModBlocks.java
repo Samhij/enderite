@@ -34,15 +34,15 @@ public class ModBlocks {
     }
 
     private static void registerBlockItem(String name, Block block) {
-        Registry.register(Registries.ITEM, Identifier.of(Enderite.MOD_ID, name), new BlockItem(block, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Enderite.MOD_ID, name)))));
+        Registry.register(Registries.ITEM, Identifier.of(Enderite.MOD_ID, name), new BlockItem(block, new Item.Settings()));
     }
 
     private static AbstractBlock.Settings baseSettingsCreate(String name) {
-        return AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Enderite.MOD_ID, name)));
+        return AbstractBlock.Settings.create();
     }
 
     private static AbstractBlock.Settings baseSettingsCopy(String name, Block copiedBlock) {
-        return AbstractBlock.Settings.copy(copiedBlock).registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Enderite.MOD_ID, name)));
+        return AbstractBlock.Settings.copy(copiedBlock);
     }
 
     public static void init() {}

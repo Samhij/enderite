@@ -3,7 +3,6 @@ package net.lonk.enderite.screen;
 import net.lonk.enderite.Enderite;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -28,17 +27,17 @@ public class VoidInfusionTableScreen extends HandledScreen<VoidInfusionTableScre
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         // Draw fuel/burn indicator (vertical flame)
         if (handler.isBurning()) {
             int fuelHeight = MathHelper.ceil(handler.getFuelProgress() * 13.0F) + 1;
-            context.drawGuiTexture(RenderLayer::getGuiTextured, LIT_PROGRESS_TEXTURE, 14, 14, 0, 14 - fuelHeight, x + 56, y + 36 + 14 - fuelHeight, 14, fuelHeight);
+            context.drawGuiTexture(LIT_PROGRESS_TEXTURE, 14, 14, 0, 14 - fuelHeight, x + 56, y + 36 + 14 - fuelHeight, 14, fuelHeight);
         }
 
         // Draw progress arrow (horizontal arrow)
         int progressWidth = MathHelper.ceil(handler.getInfusionProgress() * 24.0F);
-        context.drawGuiTexture(RenderLayer::getGuiTextured, BURN_PROGRESS_TEXTURE, 24, 16, 0, 0, x + 79, y + 34, progressWidth, 16);
+        context.drawGuiTexture(BURN_PROGRESS_TEXTURE, 24, 16, 0, 0, x + 79, y + 34, progressWidth, 16);
     }
 
     @Override

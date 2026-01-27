@@ -30,12 +30,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         translationBuilder.add("item.enderite.void_infused_pickaxe.tooltip", "A gateway to the Void");
 
-        // Blocks
-        translationBuilder.add(ModBlocks.ENDERITE_ORE, "Enderite Ore");
-        translationBuilder.add(ModBlocks.VOID_INFUSION_TABLE, "Void Infusion Table");
-        translationBuilder.add(ModBlocks.ENDERITE_BLOCK, "Block of Enderite");
-        translationBuilder.add(ModBlocks.VOID_INFUSED_BLOCK, "Block of Void");
-
         // Smithing Template
         translationBuilder.add("upgrade.enderite.enderite_upgrade", "Enderite Upgrade");
         translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.applies_to", "Netherite Equipment");

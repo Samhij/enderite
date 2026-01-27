@@ -16,14 +16,14 @@ public class EnderiteGolemEntity extends IronGolemEntity {
     protected void initGoals() {
         super.initGoals();
         // Add goal to attack iron golems
-        this.goalSelector.add(1, new ActiveTargetGoal<>(this, IronGolemEntity.class, 10, true, false,
-            (entity, world) -> !(entity instanceof EnderiteGolemEntity)));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, IronGolemEntity.class, 10, true, false,
+            (entity) -> !(entity instanceof EnderiteGolemEntity)));
     }
 
     public static DefaultAttributeContainer.Builder createEnderiteGolemAttributes() {
         return IronGolemEntity.createIronGolemAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 200.0) // 100 health = 50 hearts, doubled to 200 = 100 hearts
-                .add(EntityAttributes.ATTACK_DAMAGE, 15.0) // Iron golem has 7-21 damage, this sets base to 15
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 200.0) // 100 health = 50 hearts, doubled to 200 = 100 hearts
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0) // Iron golem has 7-21 damage, this sets base to 15
         ;
     }
 }

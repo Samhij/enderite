@@ -53,7 +53,7 @@ public abstract class VoidPlayerMixin {
 
                 ServerWorld voidWorld = player.getServer().getWorld(ModDimensions.THE_VOID);
                 if (voidWorld != null) {
-                    player.teleport(voidWorld, player.getX(), 500, player.getZ(), Set.of(), player.getYaw(), player.getPitch(), false);
+                    player.teleport(voidWorld, player.getX(), 500, player.getZ(), player.getYaw(), player.getPitch());
                 }
             }
         }

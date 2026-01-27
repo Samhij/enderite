@@ -9,8 +9,8 @@ import net.minecraft.text.Text;
 import java.util.List;
 
 public class VoidInfusedPickaxeItem extends PickaxeItem {
-    public VoidInfusedPickaxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+    public VoidInfusedPickaxeItem(ToolMaterial material, Settings settings) {
+        super(material, settings);
     }
 
     @Override

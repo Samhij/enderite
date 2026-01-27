@@ -53,7 +53,7 @@ public abstract class SpawnEnderiteGolemMixin {
     private void trySpawnEnderiteGolem(World world, BlockPos pos) {
         BlockPattern.Result result = this.getEnderiteGolemPattern().searchAround(world, pos);
         if (result != null) {
-            EnderiteGolemEntity golem = ModEntities.ENDERITE_GOLEM.create(world, SpawnReason.MOB_SUMMONED);
+            EnderiteGolemEntity golem = ModEntities.ENDERITE_GOLEM.create(world);
             if (golem != null) {
                 breakPatternBlocks(world, result);
                 BlockPos spawnPos = result.translate(0, 2, 0).getBlockPos();

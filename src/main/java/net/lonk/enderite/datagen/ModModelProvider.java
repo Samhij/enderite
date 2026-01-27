@@ -1,13 +1,14 @@
 package net.lonk.enderite.datagen;
 
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.item.ModArmorMaterials;
 import net.lonk.enderite.item.ModItems;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
+import net.minecraft.data.client.BlockStateModelGenerator;
+import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.Models;
+import net.minecraft.item.ArmorItem;
 
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
@@ -36,10 +37,10 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.ENDERITE_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.ENDERITE_HOE, Models.HANDHELD);
 
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_HELMET, ModArmorMaterials.ENDERITE_KEY, "helmet", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_CHESTPLATE, ModArmorMaterials.ENDERITE_KEY, "chestplate", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_LEGGINGS, ModArmorMaterials.ENDERITE_KEY, "leggings", false);
-        itemModelGenerator.registerArmor(ModItems.ENDERITE_BOOTS, ModArmorMaterials.ENDERITE_KEY, "boots", false);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.ENDERITE_HELMET);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.ENDERITE_CHESTPLATE);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.ENDERITE_LEGGINGS);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.ENDERITE_BOOTS);
 
 
         itemModelGenerator.register(ModItems.VOID_INFUSED_SWORD, Models.HANDHELD);
@@ -48,9 +49,9 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.VOID_INFUSED_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.VOID_INFUSED_HOE, Models.HANDHELD);
 
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_HELMET, ModArmorMaterials.VOID_INFUSED_KEY, "helmet", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_CHESTPLATE, ModArmorMaterials.VOID_INFUSED_KEY, "chestplate", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_LEGGINGS, ModArmorMaterials.VOID_INFUSED_KEY, "leggings", false);
-        itemModelGenerator.registerArmor(ModItems.VOID_INFUSED_BOOTS, ModArmorMaterials.VOID_INFUSED_KEY, "boots", false);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.VOID_INFUSED_HELMET);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.VOID_INFUSED_CHESTPLATE);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.VOID_INFUSED_LEGGINGS);
+        itemModelGenerator.registerArmor((ArmorItem) ModItems.VOID_INFUSED_BOOTS);
     }
 }

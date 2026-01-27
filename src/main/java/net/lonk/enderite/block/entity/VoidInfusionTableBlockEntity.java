@@ -16,8 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
-import net.minecraft.recipe.input.SingleStackRecipeInput;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -138,7 +137,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         // Void ingredient can be empty for recipes that don't require it
         VoidInfusionRecipe.VoidInfusionRecipeInput recipeInput =
             new VoidInfusionRecipe.VoidInfusionRecipeInput(baseInputStack, voidInputStack);
-        ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+        RecipeManager recipeManager = world.getRecipeManager();
 
         cachedRecipe = recipeManager.values()
                 .stream()
@@ -323,7 +322,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         if (slot == BASE_INPUT_SLOT || slot == VOID_INPUT_SLOT) {
             // Check if there's a recipe for this item using optimized lookup
             if (world instanceof ServerWorld && !stack.isEmpty()) {
-                ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+                RecipeManager recipeManager = world.getRecipeManager();
                 // For base input, we need to check if any recipe accepts this item in the base slot
                 // For void input, we need to check if it can be a void ingredient
                 ItemStack otherStack = slot == BASE_INPUT_SLOT ?
