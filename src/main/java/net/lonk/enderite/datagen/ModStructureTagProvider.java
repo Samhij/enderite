@@ -17,8 +17,8 @@ public class ModStructureTagProvider extends FabricTagProvider<Structure> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        var structureLookup = wrapperLookup.getOrThrow(RegistryKeys.STRUCTURE);
-        var tagBuilder = getTagBuilder(ModTags.Structures.ALL_STRUCTURES);
+        var structureLookup = wrapperLookup.getWrapperOrThrow(RegistryKeys.STRUCTURE);
+        var tagBuilder = getOrCreateTagBuilder(ModTags.Structures.ALL_STRUCTURES);
 
         structureLookup.streamKeys().forEach(key -> tagBuilder.add(key.getValue()));
     }

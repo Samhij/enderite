@@ -16,8 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
-import net.minecraft.recipe.input.SingleStackRecipeInput;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -25,10 +24,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -91,27 +87,21 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
     }
 
     @Override
-    public void onBlockReplaced(BlockPos pos, BlockState oldState) {
-        ItemScatterer.spawn(world, pos, (this));
-        super.onBlockReplaced(pos, oldState);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
+        Inventories.writeNbt(nbt, inventory, registryLookup);
+        nbt.putInt("Progress", progress);
+        nbt.putInt("FuelRemaining", fuelRemaining);
+        nbt.putInt("FuelTime", fuelTime);
     }
 
     @Override
-    protected void writeData(WriteView view) {
-        super.writeData(view);
-        Inventories.writeData(view, inventory);
-        view.putInt("Progress", progress);
-        view.putInt("FuelRemaining", fuelRemaining);
-        view.putInt("FuelTime", fuelTime);
-    }
-
-    @Override
-    protected void readData(ReadView view) {
-        super.readData(view);
-        Inventories.readData(view, inventory);
-        progress = view.getInt("Progress", 0);
-        fuelRemaining = view.getInt("FuelRemaining", 0);
-        fuelTime = view.getInt("FuelTime", 0);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
+        Inventories.readNbt(nbt, inventory, registryLookup);
+        progress = nbt.getInt("Progress");
+        fuelRemaining = nbt.getInt("FuelRemaining");
+        fuelTime = nbt.getInt("FuelTime");
     }
 
     private RecipeEntry<VoidInfusionRecipe> getCachedRecipe() {
@@ -140,7 +130,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         // Void ingredient can be empty for recipes that don't require it
         VoidInfusionRecipe.VoidInfusionRecipeInput recipeInput =
             new VoidInfusionRecipe.VoidInfusionRecipeInput(baseInputStack, voidInputStack);
-        ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+        RecipeManager recipeManager = world.getRecipeManager();
 
         cachedRecipe = recipeManager.values()
                 .stream()
@@ -325,7 +315,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
         if (slot == BASE_INPUT_SLOT || slot == VOID_INPUT_SLOT) {
             // Check if there's a recipe for this item using optimized lookup
             if (world instanceof ServerWorld && !stack.isEmpty()) {
-                ServerRecipeManager recipeManager = ((ServerWorld) world).getRecipeManager();
+                RecipeManager recipeManager = world.getRecipeManager();
                 // For base input, we need to check if any recipe accepts this item in the base slot
                 // For void input, we need to check if it can be a void ingredient
                 ItemStack otherStack = slot == BASE_INPUT_SLOT ?
@@ -426,7 +416,7 @@ public class VoidInfusionTableBlockEntity extends BlockEntity implements SidedIn
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        return pos.isWithinDistance(player.getEntityPos(), 8.0);
+        return pos.isWithinDistance(player.getPos(), 8.0);
     }
 
     @Override

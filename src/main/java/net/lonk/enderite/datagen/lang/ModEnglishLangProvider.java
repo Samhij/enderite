@@ -30,14 +30,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         translationBuilder.add("item.enderite.void_infused_pickaxe.tooltip", "A gateway to the Void");
 
-        // Blocks
-        translationBuilder.add(ModBlocks.ENDERITE_ORE, "Enderite Ore");
-        translationBuilder.add(ModBlocks.VOID_INFUSION_TABLE, "Void Infusion Table");
-        translationBuilder.add(ModBlocks.ENDERITE_BLOCK, "Block of Enderite");
-        translationBuilder.add(ModBlocks.VOID_INFUSED_BLOCK, "Block of Void");
-
         // Smithing Template
-        translationBuilder.add("upgrade.enderite.enderite_upgrade", "Enderite Upgrade");
+        translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.title", "Enderite Upgrade");
         translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.applies_to", "Netherite Equipment");
         translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.ingredients", "Enderite Ingot");
         translationBuilder.add("item.enderite.smithing_template.enderite_upgrade.base_slot_description", "Add netherite armor, weapon, or tool");
@@ -166,8 +160,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         String path = Registries.ITEM.getId(item).getPath();
 
         // Remove the specific suffix for smithing templates
-        if (path.endsWith("_smithing_template")) {
-            path = path.replace("_smithing_template", "");
+        if (path.contains("enderite_upgrade_")) {
+            path = path.replace("enderite_upgrade_", "");
         }
 
         // Split by underscores, capitalize, and join

@@ -44,10 +44,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         final Identifier BACKGROUND_TEXTURE = Identifier.ofVanilla("textures/gui/advancements/backgrounds/end.png");
         final Identifier BACKGROUND_TEXTURE_VOID = Identifier.ofVanilla("textures/block/sculk_sensor_bottom.png");
 
-        var structureLookup = wrapperLookup.getOrThrow(RegistryKeys.STRUCTURE);
-        var itemLookup = wrapperLookup.getOrThrow(RegistryKeys.ITEM);
-        var blockLookup = wrapperLookup.getOrThrow(RegistryKeys.BLOCK);
-        var entityTypeLookup = wrapperLookup.getOrThrow(RegistryKeys.ENTITY_TYPE);
+        var structureLookup = wrapperLookup.getWrapperOrThrow(RegistryKeys.STRUCTURE);
 
         // region Root & Enderite Basics
 
@@ -297,18 +294,18 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         false
                 ).parent(voidAscendant)
                 .criterion("kill_ender_dragon", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(entityTypeLookup, EntityType.ENDER_DRAGON),
+                        EntityPredicate.Builder.create().type(EntityType.ENDER_DRAGON),
                         DamageSourcePredicate.Builder.create()
                                 .directEntity(EntityPredicate.Builder.create()
                                         .equipment(EntityEquipmentPredicate.Builder.create()
                                                 .head(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.VOID_INFUSED_HELMET))
+                                                        .items(ModItems.VOID_INFUSED_HELMET))
                                                 .chest(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.VOID_INFUSED_CHESTPLATE))
+                                                        .items(ModItems.VOID_INFUSED_CHESTPLATE))
                                                 .legs(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.VOID_INFUSED_LEGGINGS))
+                                                        .items(ModItems.VOID_INFUSED_LEGGINGS))
                                                 .feet(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.VOID_INFUSED_BOOTS))
+                                                        .items(ModItems.VOID_INFUSED_BOOTS))
                                                 .build())
                                 )
                 )).build(consumer, "enderite:void_dragon");
@@ -332,8 +329,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 ).parent(voidInfused)
                 .criterion("break_bedrock", Enderite.BREAK_BLOCK_WITH_ITEM.create(new BreakBlockWithItemCriterion.Conditions(
                         Optional.empty(),
-                        Optional.of(ItemPredicate.Builder.create().items(itemLookup, ModItems.VOID_INFUSED_PICKAXE).build()),
-                        Optional.of(BlockPredicate.Builder.create().blocks(blockLookup, Blocks.BEDROCK).build())
+                        Optional.of(ItemPredicate.Builder.create().items(ModItems.VOID_INFUSED_PICKAXE).build()),
+                        Optional.of(BlockPredicate.Builder.create().blocks(Blocks.BEDROCK).build())
                 )))
                 .build(consumer, "enderite:unbreakable");
 
@@ -379,7 +376,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 )
                 // Criterion is manually granted in VoidPlayerMixin
                 .criterion("player_died", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
-                        .items(itemLookup, Items.BARRIER)
+                        .items(Items.BARRIER)
                         .count(NumberRange.IntRange.exactly(0))
                         .build()))
                 .parent(enterTheVoid)
@@ -398,7 +395,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 )
                 // Criterion is manually granted in VoidPlayerMixin
                 .criterion("player_jumped_in_void", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
-                        .items(itemLookup, Items.BARRIER)
+                        .items(Items.BARRIER)
                         .count(NumberRange.IntRange.exactly(0))
                         .build()))
                 .parent(enterTheVoid)
@@ -422,7 +419,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                                             .location(LocationPredicate.Builder.createDimension(ModDimensions.THE_VOID))
                                 )),
                                 InventoryChangedCriterion.Conditions.Slots.ANY,
-                                List.of(ItemPredicate.Builder.create().items(itemLookup, Items.ENDER_EYE).build())
+                                List.of(ItemPredicate.Builder.create().items(Items.ENDER_EYE).build())
                         )
                 ))
                 .parent(enterTheVoid)
@@ -501,7 +498,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true
                 ).parent(voidStructure)
                 .criterion("kill_blaze", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.BLAZE))
+                        EntityPredicate.Builder.create().type(EntityTypePredicate.create(EntityType.BLAZE))
                                 .location(LocationPredicate.Builder.createStructure(structureLookup.getOrThrow(StructureKeys.FORTRESS)))
                                 .location(LocationPredicate.Builder.createDimension(ModDimensions.THE_VOID))
                 ))
@@ -551,7 +548,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                                         )
                         )),
                         Optional.empty(),
-                        Optional.of(BlockPredicate.Builder.create().blocks(blockLookup, Blocks.SPAWNER).build())
+                        Optional.of(BlockPredicate.Builder.create().blocks(Blocks.SPAWNER).build())
                 )))
                 .build(consumer, "enderite:break_spider_spawner");
 
@@ -573,12 +570,12 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true
                 ).parent(echoesOfPower)
                 .criterion("kill_chicken", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(entityTypeLookup, EntityType.CHICKEN),
+                        EntityPredicate.Builder.create().type(EntityType.CHICKEN),
                         DamageSourcePredicate.Builder.create()
                                 .directEntity(EntityPredicate.Builder.create()
                                         .equipment(EntityEquipmentPredicate.Builder.create()
                                                 .mainhand(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_SWORD))
+                                                        .items(ModItems.ENDERITE_SWORD))
                                                 .build())
                                 )
                 )).build(consumer, "enderite:overkill");
@@ -595,22 +592,22 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true
                 ).parent(echoesOfPower)
                 .criterion("kill_enderman_enderite", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(entityTypeLookup, EntityType.ENDERMAN),
+                        EntityPredicate.Builder.create().type(EntityType.ENDERMAN),
                         DamageSourcePredicate.Builder.create()
                                 .directEntity(EntityPredicate.Builder.create()
                                         .equipment(EntityEquipmentPredicate.Builder.create()
                                                 .mainhand(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_SWORD))
+                                                        .items(ModItems.ENDERITE_SWORD))
                                                 .build())
                                 )
                 ))
                 .criterion("kill_enderman_void", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(entityTypeLookup, EntityType.ENDERMAN),
+                        EntityPredicate.Builder.create().type(EntityType.ENDERMAN),
                         DamageSourcePredicate.Builder.create()
                                 .directEntity(EntityPredicate.Builder.create()
                                         .equipment(EntityEquipmentPredicate.Builder.create()
                                                 .mainhand(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.VOID_INFUSED_SWORD))
+                                                        .items(ModItems.VOID_INFUSED_SWORD))
                                                 .build())
                                 )
                 ))
@@ -631,18 +628,18 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         false
                 ).parent(voidKnight)
                 .criterion("kill_ender_dragon", OnKilledCriterion.Conditions.createPlayerKilledEntity(
-                        EntityPredicate.Builder.create().type(entityTypeLookup, EntityType.ENDER_DRAGON),
+                        EntityPredicate.Builder.create().type(EntityType.ENDER_DRAGON),
                         DamageSourcePredicate.Builder.create()
                                 .directEntity(EntityPredicate.Builder.create()
                                         .equipment(EntityEquipmentPredicate.Builder.create()
                                                 .head(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_HELMET))
+                                                        .items(ModItems.ENDERITE_HELMET))
                                                 .chest(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_CHESTPLATE))
+                                                        .items(ModItems.ENDERITE_CHESTPLATE))
                                                 .legs(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_LEGGINGS))
+                                                        .items(ModItems.ENDERITE_LEGGINGS))
                                                 .feet(ItemPredicate.Builder.create()
-                                                        .items(itemLookup, ModItems.ENDERITE_BOOTS))
+                                                        .items(ModItems.ENDERITE_BOOTS))
                                                 .build())
                                 )
                 )).build(consumer, "enderite:ender_dragon");

@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.lonk.enderite.block.ModBlocks;
 import net.lonk.enderite.item.ModItems;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.data.recipe.SmithingTransformRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.SmithingTransformRecipeJsonBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -23,69 +23,64 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter exporter) {
-        return new RecipeGenerator(wrapperLookup, exporter) {
-            @Override
-            public void generate() {
-                // Smelting & Blasting
-                offerSmelting(List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 200, "enderite");
-                offerBlasting(List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 100, "enderite");
+    public void generate(RecipeExporter exporter) {
+        // Smelting & Blasting
+        offerSmelting(exporter, List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 200, "enderite");
+        offerBlasting(exporter, List.of(ModBlocks.ENDERITE_ORE), RecipeCategory.MISC, ModItems.RAW_ENDERITE, 0.25f, 100, "enderite");
 
-                offerSmelting(List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 200, "enderite");
-                offerBlasting(List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 100, "enderite");
+        offerSmelting(exporter, List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 200, "enderite");
+        offerBlasting(exporter, List.of(ModItems.RAW_ENDERITE), RecipeCategory.MISC, ModItems.ENDERITE_SCRAP, 0.25f, 100, "enderite");
 
-                // Items
-                createShaped(RecipeCategory.MISC, ModItems.ENDERITE_INGOT)
-                        .pattern("AAA")
-                        .pattern("ABA")
-                        .pattern("AAA")
-                        .input('A', ModItems.ENDERITE_SCRAP)
-                        .input('B', Items.ECHO_SHARD)
-                        .criterion(hasItem(ModItems.ENDERITE_SCRAP), conditionsFromItem(ModItems.ENDERITE_SCRAP))
-                        .offerTo(exporter, "enderite_ingot_from_enderite_scrap");
+        // Items
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.ENDERITE_INGOT)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("AAA")
+                .input('A', ModItems.ENDERITE_SCRAP)
+                .input('B', Items.ECHO_SHARD)
+                .criterion(hasItem(ModItems.ENDERITE_SCRAP), conditionsFromItem(ModItems.ENDERITE_SCRAP))
+                .offerTo(exporter, "enderite_ingot_from_enderite_scrap");
 
-                offerSmithingTemplateCopyingRecipe(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, Blocks.END_STONE);
+        offerSmithingTemplateCopyingRecipe(exporter, ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE, Blocks.END_STONE);
 
-                // Blocks
-                offerReversibleCompactingRecipes(RecipeCategory.MISC, ModItems.ENDERITE_INGOT, RecipeCategory.MISC, ModBlocks.ENDERITE_BLOCK);
-                offerReversibleCompactingRecipes(RecipeCategory.MISC, ModItems.VOID_INFUSED_INGOT, RecipeCategory.MISC, ModBlocks.VOID_INFUSED_BLOCK);
+        // Blocks
+        offerReversibleCompactingRecipes(exporter, RecipeCategory.MISC, ModItems.ENDERITE_INGOT, RecipeCategory.MISC, ModBlocks.ENDERITE_BLOCK);
+        offerReversibleCompactingRecipes(exporter, RecipeCategory.MISC, ModItems.VOID_INFUSED_INGOT, RecipeCategory.MISC, ModBlocks.VOID_INFUSED_BLOCK);
 
-                createShaped(RecipeCategory.MISC, ModBlocks.VOID_INFUSION_TABLE)
-                        .pattern("OEO")
-                        .pattern(" B ")
-                        .pattern("CCC")
-                        .input('O', Blocks.CRYING_OBSIDIAN)
-                        .input('E', Items.ENDER_EYE)
-                        .input('B', Blocks.END_STONE_BRICKS)
-                        .input('C', Blocks.CHORUS_FLOWER)
-                        .criterion(hasItem(Items.ENDER_EYE), conditionsFromItem(Items.ENDER_EYE))
-                        .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.VOID_INFUSION_TABLE)
+                .pattern("OEO")
+                .pattern(" B ")
+                .pattern("CCC")
+                .input('O', Blocks.CRYING_OBSIDIAN)
+                .input('E', Items.ENDER_EYE)
+                .input('B', Blocks.END_STONE_BRICKS)
+                .input('C', Blocks.CHORUS_FLOWER)
+                .criterion(hasItem(Items.ENDER_EYE), conditionsFromItem(Items.ENDER_EYE))
+                .offerTo(exporter);
 
-                // Tools
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_SWORD, RecipeCategory.COMBAT, ModItems.ENDERITE_SWORD);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_PICKAXE, RecipeCategory.TOOLS, ModItems.ENDERITE_PICKAXE);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_SHOVEL, RecipeCategory.TOOLS, ModItems.ENDERITE_SHOVEL);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_AXE, RecipeCategory.TOOLS, ModItems.ENDERITE_AXE);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_HOE, RecipeCategory.TOOLS, ModItems.ENDERITE_HOE);
+        // Tools
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_SWORD, RecipeCategory.COMBAT, ModItems.ENDERITE_SWORD);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_PICKAXE, RecipeCategory.TOOLS, ModItems.ENDERITE_PICKAXE);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_SHOVEL, RecipeCategory.TOOLS, ModItems.ENDERITE_SHOVEL);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_AXE, RecipeCategory.TOOLS, ModItems.ENDERITE_AXE);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_HOE, RecipeCategory.TOOLS, ModItems.ENDERITE_HOE);
 
-                // Armor
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_HELMET, RecipeCategory.COMBAT, ModItems.ENDERITE_HELMET);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_CHESTPLATE, RecipeCategory.COMBAT, ModItems.ENDERITE_CHESTPLATE);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_LEGGINGS, RecipeCategory.COMBAT, ModItems.ENDERITE_LEGGINGS);
-                offerEnderiteUpgradeRecipe(Items.NETHERITE_BOOTS, RecipeCategory.COMBAT, ModItems.ENDERITE_BOOTS);
+        // Armor
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_HELMET, RecipeCategory.COMBAT, ModItems.ENDERITE_HELMET);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_CHESTPLATE, RecipeCategory.COMBAT, ModItems.ENDERITE_CHESTPLATE);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_LEGGINGS, RecipeCategory.COMBAT, ModItems.ENDERITE_LEGGINGS);
+        offerEnderiteUpgradeRecipe(exporter, Items.NETHERITE_BOOTS, RecipeCategory.COMBAT, ModItems.ENDERITE_BOOTS);
 
-                // Void Infusion Recipes are manually created in src/main/resources/data/enderite/recipe/
-                // to avoid datagen serialization issues
-            }
+        // Void Infusion Recipes are manually created in src/main/resources/data/enderite/recipe/
+        // to avoid datagen serialization issues
+    }
 
-            private void offerEnderiteUpgradeRecipe(Item input, RecipeCategory category, Item result) {
-                SmithingTransformRecipeJsonBuilder.create(
-                                Ingredient.ofItems(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(input), Ingredient.ofItems(ModItems.ENDERITE_INGOT), category, result
-                        )
-                        .criterion(hasItem(ModItems.ENDERITE_INGOT), conditionsFromItem(ModItems.ENDERITE_INGOT))
-                        .offerTo(exporter, getItemPath(result) + "_smithing");
-            }
-        };
+    private static void offerEnderiteUpgradeRecipe(RecipeExporter exporter, Item input, RecipeCategory category, Item result) {
+        SmithingTransformRecipeJsonBuilder.create(
+                        Ingredient.ofItems(ModItems.ENDERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(input), Ingredient.ofItems(ModItems.ENDERITE_INGOT), category, result
+                )
+                .criterion(hasItem(ModItems.ENDERITE_INGOT), conditionsFromItem(ModItems.ENDERITE_INGOT))
+                .offerTo(exporter, getItemPath(result) + "_smithing");
     }
 
     @Override

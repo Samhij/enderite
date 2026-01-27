@@ -1,21 +1,21 @@
 package net.lonk.enderite.item.custom;
 
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 
-import java.util.function.Consumer;
+import java.util.List;
 
-public class VoidInfusedPickaxeItem extends Item {
-    public VoidInfusedPickaxeItem(Settings settings) {
-        super(settings);
+public class VoidInfusedPickaxeItem extends PickaxeItem {
+    public VoidInfusedPickaxeItem(ToolMaterial material, Settings settings) {
+        super(material, settings);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.translatable("item.enderite.void_infused_pickaxe.tooltip"));
-        super.appendTooltip(stack, context, displayComponent, textConsumer, type);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
+        tooltip.add(Text.translatable("item.enderite.void_infused_pickaxe.tooltip"));
     }
 }

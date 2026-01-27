@@ -3,20 +3,16 @@ package net.lonk.enderite.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.RecipeBookCategories;
-import net.minecraft.recipe.book.RecipeBookCategory;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class VoidInfusionRecipe implements Recipe<VoidInfusionRecipe.VoidInfusionRecipeInput> {
     private final Ingredient baseIngredient;
@@ -56,6 +52,11 @@ public class VoidInfusionRecipe implements Recipe<VoidInfusionRecipe.VoidInfusio
         return output;
     }
 
+    @Override
+    public boolean fits(int width, int height) {
+        return true;
+    }
+
     public record VoidInfusionRecipeInput(ItemStack base, ItemStack voidItem) implements RecipeInput {
         @Override
         public ItemStack getStackInSlot(int slot) {
@@ -67,29 +68,24 @@ public class VoidInfusionRecipe implements Recipe<VoidInfusionRecipe.VoidInfusio
         }
 
         @Override
-        public int size() {
+        public int getSize() {
             return 2;
         }
     }
 
     @Override
-    public RecipeSerializer<VoidInfusionRecipe> getSerializer() {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+        return this.result.copy();
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipeTypes.VOID_INFUSION_SERIALIZER;
     }
 
     @Override
-    public RecipeType<VoidInfusionRecipe> getType() {
+    public RecipeType<?> getType() {
         return ModRecipeTypes.VOID_INFUSION;
-    }
-
-    @Override
-    public RecipeBookCategory getRecipeBookCategory() {
-        return RecipeBookCategories.CRAFTING_MISC;
-    }
-
-    @Override
-    public IngredientPlacement getIngredientPlacement() {
-        return IngredientPlacement.NONE;
     }
 
     public Ingredient getBaseIngredient() {
@@ -111,23 +107,27 @@ public class VoidInfusionRecipe implements Recipe<VoidInfusionRecipe.VoidInfusio
     public static class Serializer implements RecipeSerializer<VoidInfusionRecipe> {
         public static final MapCodec<VoidInfusionRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(
-                        Ingredient.CODEC.fieldOf("base_ingredient").forGetter(VoidInfusionRecipe::getBaseIngredient),
-                        Ingredient.CODEC.optionalFieldOf("void_ingredient").forGetter(recipe -> {
-                            Ingredient voidIng = recipe.getVoidIngredient();
-                            return voidIng != null && !voidIng.isEmpty() ? java.util.Optional.of(voidIng) : java.util.Optional.empty();
-                        }),
-                        ItemStack.CODEC.fieldOf("result").forGetter(VoidInfusionRecipe::getResultStack),
+                        Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("base_ingredient").forGetter(VoidInfusionRecipe::getBaseIngredient),
+                        Ingredient.ALLOW_EMPTY_CODEC.optionalFieldOf("void_ingredient", Ingredient.EMPTY).forGetter(VoidInfusionRecipe::getVoidIngredient),
+                        ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(VoidInfusionRecipe::getResultStack),
                         Codec.INT.optionalFieldOf("infusionTime", 200).forGetter(VoidInfusionRecipe::getInfusionTime)
-                ).apply(instance, (base, voidOpt, result, time) ->
-                    new VoidInfusionRecipe(base, voidOpt.orElse(null), result, time))
+                ).apply(instance, VoidInfusionRecipe::new)
         );
 
-        public static final PacketCodec<RegistryByteBuf, VoidInfusionRecipe> PACKET_CODEC = PacketCodec.tuple(
-                Ingredient.PACKET_CODEC, VoidInfusionRecipe::getBaseIngredient,
-                Ingredient.PACKET_CODEC, VoidInfusionRecipe::getVoidIngredient,
-                ItemStack.PACKET_CODEC, VoidInfusionRecipe::getResultStack,
-                PacketCodec.ofStatic(PacketByteBuf::writeInt, PacketByteBuf::readInt), VoidInfusionRecipe::getInfusionTime,
-                VoidInfusionRecipe::new
+        public static final PacketCodec<RegistryByteBuf, VoidInfusionRecipe> PACKET_CODEC = PacketCodec.of(
+                (recipe, buf) -> {
+                    Ingredient.PACKET_CODEC.encode(buf, recipe.baseIngredient);
+                    Ingredient.PACKET_CODEC.encode(buf, recipe.voidIngredient != null ? recipe.voidIngredient : Ingredient.EMPTY);
+                    ItemStack.PACKET_CODEC.encode(buf, recipe.result);
+                    buf.writeInt(recipe.infusionTime);
+                },
+                buf -> {
+                    Ingredient baseIngredient = Ingredient.PACKET_CODEC.decode(buf);
+                    Ingredient voidIngredient = Ingredient.PACKET_CODEC.decode(buf);
+                    ItemStack result = ItemStack.PACKET_CODEC.decode(buf);
+                    int infusionTime = buf.readInt();
+                    return new VoidInfusionRecipe(baseIngredient, voidIngredient, result, infusionTime);
+                }
         );
 
         @Override
