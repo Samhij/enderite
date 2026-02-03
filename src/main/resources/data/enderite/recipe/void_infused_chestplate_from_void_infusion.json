@@ -1,7 +1,7 @@
 {
   "type": "enderite:void_infusion",
-  "base_ingredient": "enderite:enderite_chestplate",
-  "void_ingredient": "enderite:void_infused_ingot",
+  "base_ingredient": { "item": "enderite:enderite_chestplate" },
+  "void_ingredient": { "item": "enderite:void_infused_ingot" },
   "result": {
     "id": "enderite:void_infused_chestplate",
     "count": 1

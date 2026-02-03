@@ -1,7 +1,7 @@
 {
   "type": "enderite:void_infusion",
   "base_ingredient": "minecraft:chorus_fruit",
-  "void_ingredient": "enderite:void_infused_ingot",
+  "void_ingredient": { "item": "enderite:void_infused_ingot" },
   "result": {
     "id": "enderite:void_infused_chorus_fruit",
     "count": 1
